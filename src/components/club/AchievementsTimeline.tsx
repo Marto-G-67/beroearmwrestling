@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Trophy, Medal, Star, Flag, BookOpen } from "lucide-react";
+import { Trophy, Medal, Star, Flag, BookOpen, Users, ChevronRight } from "lucide-react";
 import CompetitionModal, { CompetitionData } from "./CompetitionModal";
+import CompetitorModal, { CompetitorData } from "./CompetitorModal";
 import comp2025 from "@/assets/comp-2025-team.jpg";
 import comp2025_1 from "@/assets/comp-2025-1.jpg";
 import comp2025_2 from "@/assets/comp-2025-2.jpg";
@@ -8,6 +9,8 @@ import comp2025_3 from "@/assets/comp-2025-3.jpg";
 import comp2025_4 from "@/assets/comp-2025-4.jpg";
 import comp2025_5 from "@/assets/comp-2025-5.jpg";
 import comp2025_6 from "@/assets/comp-2025-6.jpg";
+import antonPodium from "@/assets/comp-2026-anton-podium.jpg";
+import antonMatch from "@/assets/comp-2026-anton-match.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -42,6 +45,27 @@ const competitions: Record<string, CompetitionData> = {
   },
 };
 
+const competitors2026: CompetitorData[] = [
+  {
+    name: "Антон Петров",
+    category: "90+ кг",
+    medals: [
+      { hand: "лява ръка", place: "2 място", color: "silver" },
+      { hand: "дясна ръка", place: "3 място", color: "bronze" },
+    ],
+    cover: antonPodium,
+    bio: [
+      'Антон Петров е един от стълбовете на младежкия състав на „Берое Армрестлинг". На Републиканското първенство по канадска борба 2026 г. той се изправи срещу най-силните състезатели в категория 90+ кг и се завърна с два медала — сребърен на лява ръка и бронзов на дясна.',
+      "Антон тренира упорито през цялата година, съчетавайки силова работа в залата с техническа подготовка на масата. Стилът му е базиран на експлозивна сила и агресивен старт, но през последния сезон работи активно и върху техника на куката и контрола в края на мача.",
+      "Този двоен подиум е поредно доказателство, че следващото поколение на клуба е готово да поеме щафетата и да представлява Стара Загора на най-високо ниво.",
+    ],
+    gallery: [
+      { src: antonPodium, alt: "Антон Петров на подиума — Републиканско първенство 2026" },
+      { src: antonMatch, alt: "Антон Петров в схватка на масата — Републиканско първенство 2026" },
+    ],
+  },
+];
+
 const achievements = [
   {
     year: "2025",
@@ -53,10 +77,13 @@ const achievements = [
     image: comp2025,
   },
   {
-    year: "2024",
+    year: "2026",
     icon: Medal,
-    title: "Първо място за Христо Димов в Девин",
-    text: 'Седемнадесетгодишният Христо Димов от „Берое" грабва първо място на международния турнир в Девин — поредно доказателство за силата на следващото поколение.',
+    title: "Републиканско първенство по канадска борба 2026г.",
+    text: 'Силно представяне на „Берое" на Републиканското първенство — нови медали и нови имена, които се изкачват по подиума за родния клуб.',
+    highlight: true,
+    competitorsId: "2026-republic",
+    image: antonPodium,
   },
   {
     year: "2024",
@@ -74,6 +101,15 @@ const achievements = [
 
 const AchievementsTimeline = () => {
   const [openId, setOpenId] = useState<string | null>(null);
+  const [openCompetitorsId, setOpenCompetitorsId] = useState<string | null>(null);
+  const [openCompetitor, setOpenCompetitor] = useState<CompetitorData | null>(null);
+
+  const medalChip = (color: "gold" | "silver" | "bronze") =>
+    color === "gold"
+      ? "text-warning border-warning/60"
+      : color === "silver"
+      ? "text-foreground border-foreground/40"
+      : "text-orange-400 border-orange-400/40";
 
   return (
     <section
@@ -103,7 +139,11 @@ const AchievementsTimeline = () => {
           <ul className="space-y-10 md:space-y-14">
             {achievements.map((a, i) => {
               const right = i % 2 === 1;
-              const clickable = !!a.competitionId;
+              const clickable = !!a.competitionId || !!a.competitorsId;
+              const handleClick = () => {
+                if (a.competitionId) setOpenId(a.competitionId);
+                else if (a.competitorsId) setOpenCompetitorsId(a.competitorsId);
+              };
               const Wrapper: any = clickable ? "button" : "div";
               return (
                 <li
@@ -116,8 +156,8 @@ const AchievementsTimeline = () => {
                     {...(clickable
                       ? {
                           type: "button",
-                          onClick: () => setOpenId(a.competitionId!),
-                          "aria-label": `Виж пълната статия: ${a.title}`,
+                          onClick: handleClick,
+                          "aria-label": `Виж повече: ${a.title}`,
                         }
                       : {})}
                     className={`pl-12 md:pl-0 ${
@@ -156,8 +196,17 @@ const AchievementsTimeline = () => {
                           right ? "" : "md:flex-row-reverse"
                         }`}
                       >
-                        <BookOpen className="h-4 w-4" />
-                        Прочети статията
+                        {a.competitorsId ? (
+                          <>
+                            <Users className="h-4 w-4" />
+                            Виж състезателите
+                          </>
+                        ) : (
+                          <>
+                            <BookOpen className="h-4 w-4" />
+                            Прочети статията
+                          </>
+                        )}
                       </span>
                     )}
                   </Wrapper>
@@ -175,10 +224,8 @@ const AchievementsTimeline = () => {
                   {a.image ? (
                     <button
                       type="button"
-                      onClick={() =>
-                        a.competitionId && setOpenId(a.competitionId)
-                      }
-                      aria-label={`Виж пълната статия: ${a.title}`}
+                      onClick={handleClick}
+                      aria-label={`Виж повече: ${a.title}`}
                       className="group relative block w-full overflow-hidden rounded-2xl border border-border/60 glass shadow-elevated focus:outline-none focus:ring-2 focus:ring-warning"
                     >
                       <img
@@ -190,8 +237,8 @@ const AchievementsTimeline = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent" />
                       <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs uppercase tracking-[0.3em] text-warning">
                         <span className="inline-flex items-center gap-2">
-                          <BookOpen className="h-4 w-4" />
-                          Отвори статията
+                          {a.competitorsId ? <Users className="h-4 w-4" /> : <BookOpen className="h-4 w-4" />}
+                          {a.competitorsId ? "Виж състезателите" : "Отвори статията"}
                         </span>
                         <span className="text-foreground/80">{a.year}</span>
                       </div>
@@ -208,6 +255,84 @@ const AchievementsTimeline = () => {
 
       {openId && competitions[openId] && (
         <CompetitionModal data={competitions[openId]} onClose={() => setOpenId(null)} />
+      )}
+
+      {openCompetitorsId === "2026-republic" && (
+        <div
+          className="fixed inset-0 z-[80] bg-background/95 backdrop-blur-md overflow-y-auto animate-fade-up"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setOpenCompetitorsId(null)}
+        >
+          <div
+            className="min-h-full container max-w-5xl py-10 md:py-16"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setOpenCompetitorsId(null)}
+              aria-label="Затвори"
+              className="sticky top-4 ml-auto flex h-11 w-11 rounded-full bg-primary text-primary-foreground hover:opacity-90 items-center justify-center transition-colors z-10 shadow-elevated"
+            >
+              ✕
+            </button>
+            <div className="text-center max-w-3xl mx-auto">
+              <span className="text-xs uppercase tracking-[0.4em] text-warning">2026</span>
+              <h2 className="mt-3 font-display text-3xl md:text-6xl tracking-tight gold-text">
+                Републиканско първенство 2026
+              </h2>
+              <p className="mt-4 text-muted-foreground">
+                Кликни върху състезател, за да видиш биография, медали и галерия.
+              </p>
+            </div>
+
+            <div className="mt-10 grid sm:grid-cols-2 gap-5">
+              {competitors2026.map((c) => (
+                <button
+                  key={c.name}
+                  type="button"
+                  onClick={() => setOpenCompetitor(c)}
+                  className="group relative text-left overflow-hidden rounded-2xl border border-border/60 glass shadow-elevated card-hover focus:outline-none focus:ring-2 focus:ring-warning"
+                >
+                  <div className="relative h-56 md:h-64 overflow-hidden">
+                    <img
+                      src={c.cover}
+                      alt={c.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+                  </div>
+                  <div className="p-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="font-display text-2xl text-foreground group-hover:text-warning transition-colors">
+                        {c.name}
+                      </h3>
+                      {c.medals.map((m, i) => (
+                        <span
+                          key={i}
+                          className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 border text-[10px] uppercase tracking-widest ${medalChip(m.color)}`}
+                        >
+                          <Medal className="h-3 w-3" />
+                          {m.place} {m.hand === "лява ръка" ? "лява" : "дясна"}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Категория {c.category}
+                    </p>
+                    <span className="mt-3 inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-warning">
+                      Отвори профил <ChevronRight className="h-4 w-4" />
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openCompetitor && (
+        <CompetitorModal data={openCompetitor} onClose={() => setOpenCompetitor(null)} />
       )}
     </section>
   );
