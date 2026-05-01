@@ -4,10 +4,8 @@ import ClubHero from "@/components/club/ClubHero";
 import StatsCounters from "@/components/club/StatsCounters";
 import AboutClub from "@/components/club/AboutClub";
 import PresidentSection from "@/components/club/PresidentSection";
-import TrainersGrid from "@/components/club/TrainersGrid";
 import AchievementsTimeline from "@/components/club/AchievementsTimeline";
 import Gallery from "@/components/club/Gallery";
-import EventsList from "@/components/club/EventsList";
 import JoinCTA from "@/components/club/JoinCTA";
 import ContactSection from "@/components/club/ContactSection";
 import ClubFooter from "@/components/club/ClubFooter";
@@ -25,10 +23,8 @@ const Index = () => {
         <StatsCounters />
         <AboutClub />
         <PresidentSection />
-        <TrainersGrid />
         <AchievementsTimeline />
         <Gallery />
-        <EventsList />
         <JoinCTA />
         <ContactSection />
       </main>

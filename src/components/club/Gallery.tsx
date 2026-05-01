@@ -1,12 +1,15 @@
 import team from "@/assets/team-photo.jpg";
-import president from "@/assets/president-cholakov.png";
-import logo from "@/assets/beroe-logo.png";
+import g1 from "@/assets/gallery-1.jpg";
+import g2 from "@/assets/gallery-2.jpg";
+import g3 from "@/assets/gallery-3.jpg";
+import g4 from "@/assets/gallery-4.jpg";
 
 const items = [
   { src: team, alt: "Отборът на СК Берое — групова снимка от турнир", className: "md:col-span-2 md:row-span-2" },
-  { src: president, alt: "Президентът Георги Чолаков с медали и купа" },
-  { src: logo, alt: "Лого на СК Берое — лъв на щит", className: "bg-secondary/20" },
-  { src: team, alt: "Отборът преди състезание", className: "md:col-span-2" },
+  { src: g1, alt: 'Млад състезател на „Берое" в схватка на турнир' },
+  { src: g2, alt: 'Състезатели на „Берое" с медали по време на мач' },
+  { src: g3, alt: "Финален двубой на международен турнир" },
+  { src: g4, alt: "Тежка категория — мач под напрежение" },
 ];
 
 const Gallery = () => (
