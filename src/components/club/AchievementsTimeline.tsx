@@ -360,9 +360,11 @@ const AchievementsTimeline = () => {
                         </span>
                       ))}
                     </div>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Категория {c.category}
-                    </p>
+                    {c.category && (
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        Категория {c.category}
+                      </p>
+                    )}
                     <span className="mt-3 inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-warning">
                       Отвори профил <ChevronRight className="h-4 w-4" />
                     </span>
