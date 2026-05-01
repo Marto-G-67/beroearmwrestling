@@ -23,6 +23,9 @@ import malamirMatch2 from "@/assets/comp-2026-malamir-match-2.jpg";
 import milkyPodium from "@/assets/comp-2026-milky-podium.jpg";
 import milkyMatch1 from "@/assets/comp-2026-milky-match-1.jpg";
 import milkyMatch2 from "@/assets/comp-2026-milky-match-2.jpg";
+import cholakovPodium from "@/assets/comp-2026-cholakov-podium.jpg";
+import cholakovPodium2 from "@/assets/comp-2026-cholakov-podium-2.jpg";
+import cholakovMatch from "@/assets/comp-2026-cholakov-match.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -149,6 +152,24 @@ const competitors2026: CompetitorData[] = [
       { src: milkyPodium, alt: "Милкияс на първото стъпало на подиума — Републиканско първенство 2026" },
       { src: milkyMatch1, alt: "Милкияс в схватка на масата — Републиканско първенство 2026" },
       { src: milkyMatch2, alt: "Милкияс срещу съперник — Републиканско първенство 2026" },
+    ],
+  },
+  {
+    name: "Георги Чолаков",
+    category: "110+ кг",
+    medals: [
+      { hand: "лява ръка", place: "3 място", color: "bronze" },
+    ],
+    cover: cholakovPodium,
+    bio: [
+      'Георги Чолаков — президентът и душата на „Берое Армрестлинг" — отново се качи на подиума като състезател. На Републиканското първенство по канадска борба 2026 г. в Панагюрище в категория 110+ кг той извоюва бронзов медал на лява ръка, доказвайки, че години след години остава една от знаковите фигури на българския арм.',
+      'Като президент на клуба той организира тренировките, води младите състезатели и продължава да дава личен пример на масата. Опитът, силата и характерът му са фундаментът, върху който се изгражда новото поколение на „Берое".',
+      'Бронзът в най-тежката категория е поредно доказателство, че Чолаков не е само лидер извън масата, но и боец, който все още може да премери сили с най-добрите в страната.',
+    ],
+    gallery: [
+      { src: cholakovPodium, alt: "Георги Чолаков на подиума в категория 110+ кг — Републиканско първенство 2026" },
+      { src: cholakovPodium2, alt: "Георги Чолаков с трофей на подиума — Републиканско първенство 2026" },
+      { src: cholakovMatch, alt: "Георги Чолаков в схватка на масата — Републиканско първенство 2026" },
     ],
   },
 ];
