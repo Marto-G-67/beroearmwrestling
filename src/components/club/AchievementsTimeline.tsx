@@ -12,6 +12,8 @@ import comp2025_6 from "@/assets/comp-2025-6.jpg";
 import antonPodium from "@/assets/comp-2026-anton-podium.jpg";
 import antonMatch from "@/assets/comp-2026-anton-match.jpg";
 import antonPodium2 from "@/assets/comp-2026-anton-podium-2.jpg";
+import shterioPodium from "@/assets/comp-2026-shterio-podium.jpg";
+import shterioMatch from "@/assets/comp-2026-shterio-match.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -64,6 +66,24 @@ const competitors2026: CompetitorData[] = [
       { src: antonPodium, alt: "Антон Петров на подиума — Републиканско първенство 2026" },
       { src: antonMatch, alt: "Антон Петров в схватка на масата — Републиканско първенство 2026" },
       { src: antonPodium2, alt: "Антон Петров на подиума в категория 90+ кг — Републиканско първенство 2026" },
+    ],
+  },
+  {
+    name: "Щерьо Щерев",
+    category: "80 кг",
+    medals: [
+      { hand: "лява ръка", place: "2 място", color: "silver" },
+      { hand: "дясна ръка", place: "3 място", color: "bronze" },
+    ],
+    cover: shterioPodium,
+    bio: [
+      'Щерьо Щерев е един от най-обещаващите млади състезатели на „Берое Армрестлинг". На Републиканското първенство по канадска борба 2026 г. в категория 80 кг той се качи на подиума и с двете ръце — сребро на лява и бронз на дясна.',
+      "Щерьо съчетава техника, скорост и хладнокръвие на масата. Тренира целогодишно в залата на клуба, където работи както върху силовата база, така и върху специфичните движения за канадска борба — натиск, кука и страничен контрол.",
+      "Двата медала в Панагюрище са важна крачка в кариерата му и категоричен знак, че следващото поколение на „Берое" е готово да се бори за върха на националната сцена.",
+    ],
+    gallery: [
+      { src: shterioPodium, alt: "Щерьо Щерев на подиума — Републиканско първенство 2026" },
+      { src: shterioMatch, alt: "Щерьо Щерев в схватка на масата — Републиканско първенство 2026" },
     ],
   },
 ];
