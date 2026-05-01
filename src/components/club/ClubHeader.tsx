@@ -6,10 +6,8 @@ import logo from "@/assets/beroe-logo.png";
 const links = [
   { href: "#about", label: "За клуба" },
   { href: "#president", label: "Президент" },
-  { href: "#trainers", label: "Треньори" },
   { href: "#achievements", label: "Постижения" },
   { href: "#gallery", label: "Галерия" },
-  { href: "#events", label: "Турнири" },
   { href: "#contact", label: "Контакти" },
 ];
 
