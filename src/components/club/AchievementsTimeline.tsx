@@ -545,6 +545,7 @@ const AchievementsTimeline = () => {
         </div>
       )}
 
+      {openCompetitor && (
         <CompetitorModal data={openCompetitor} onClose={() => setOpenCompetitor(null)} />
       )}
     </section>
