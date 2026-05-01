@@ -50,7 +50,9 @@ const ClubFooter = () => (
             <Facebook className="h-4 w-4" />
           </a>
           <a
-            href="#"
+            href="https://www.instagram.com/beroe_armwrestling/"
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Instagram"
             className="h-10 w-10 rounded-full glass flex items-center justify-center hover:border-primary hover:text-primary transition-colors"
           >
