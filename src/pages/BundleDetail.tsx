@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
 import { ArrowLeft, Check, Package } from "lucide-react";
-import Countdown from "@/components/site/Countdown";
+
 
 const BundleDetail = () => {
   const { slug } = useParams();
@@ -47,11 +47,6 @@ const BundleDetail = () => {
           <h1 className="font-display text-4xl md:text-5xl font-bold mt-2">{bundle.name}</h1>
           <p className="mt-3 text-muted-foreground">{bundle.tagline}</p>
 
-          {bundle.endsAt && (
-            <div className="mt-4">
-              <Countdown endsAt={bundle.endsAt} label="Limited offer ends in" />
-            </div>
-          )}
 
           <div className="mt-6 glass rounded-2xl p-5">
             <div className="text-xs uppercase tracking-widest text-muted-foreground mb-3">What's inside</div>
