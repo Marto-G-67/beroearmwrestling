@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { X, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 
 interface LightboxProps {
@@ -60,7 +61,7 @@ const Lightbox = ({ images, index, onClose, onNavigate }: LightboxProps) => {
 
   const current = images[index];
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-md animate-fade-up"
       role="dialog"
@@ -155,10 +156,8 @@ const Lightbox = ({ images, index, onClose, onNavigate }: LightboxProps) => {
         />
       </div>
 
-      <div className="absolute bottom-4 inset-x-0 text-center text-xs text-muted-foreground px-4">
-        {current.alt}
-      </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
