@@ -23,6 +23,9 @@ import malamirMatch2 from "@/assets/comp-2026-malamir-match-2.jpg";
 import milkyPodium from "@/assets/comp-2026-milky-podium.jpg";
 import milkyMatch1 from "@/assets/comp-2026-milky-match-1.jpg";
 import milkyMatch2 from "@/assets/comp-2026-milky-match-2.jpg";
+import cholakovPodium from "@/assets/comp-2026-cholakov-podium.jpg";
+import cholakovPodium2 from "@/assets/comp-2026-cholakov-podium-2.jpg";
+import cholakovMatch from "@/assets/comp-2026-cholakov-match.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
