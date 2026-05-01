@@ -4,7 +4,7 @@ import Lightbox from "./Lightbox";
 
 export interface CompetitorData {
   name: string;
-  category: string;
+  category?: string;
   medals: { hand: string; place: string; color: "gold" | "silver" | "bronze" }[];
   cover: string;
   bio: string[];
@@ -77,9 +77,11 @@ const CompetitorModal = ({ data, onClose }: Props) => {
                 ))}
               </div>
             </div>
-            <div className="mt-3 inline-flex items-center gap-2 text-sm text-muted-foreground">
-              <Weight className="h-4 w-4 text-primary" /> Категория {data.category}
-            </div>
+            {data.category && (
+              <div className="mt-3 inline-flex items-center gap-2 text-sm text-muted-foreground">
+                <Weight className="h-4 w-4 text-primary" /> Категория {data.category}
+              </div>
+            )}
           </div>
         </div>
 

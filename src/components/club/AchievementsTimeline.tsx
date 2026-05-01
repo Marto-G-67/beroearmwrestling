@@ -14,6 +14,9 @@ import antonMatch from "@/assets/comp-2026-anton-match.jpg";
 import antonPodium2 from "@/assets/comp-2026-anton-podium-2.jpg";
 import shterioPodium from "@/assets/comp-2026-shterio-podium.jpg";
 import shterioMatch from "@/assets/comp-2026-shterio-match.jpg";
+import davidPodium from "@/assets/comp-2026-david-podium.jpg";
+import davidMatch1 from "@/assets/comp-2026-david-match-1.jpg";
+import davidMatch2 from "@/assets/comp-2026-david-match-2.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -84,6 +87,24 @@ const competitors2026: CompetitorData[] = [
     gallery: [
       { src: shterioPodium, alt: "Щерьо Щерев на подиума — Републиканско първенство 2026" },
       { src: shterioMatch, alt: "Щерьо Щерев в схватка на масата — Републиканско първенство 2026" },
+    ],
+  },
+  {
+    name: "Давид Каневски",
+    medals: [
+      { hand: "лява ръка", place: "2 място", color: "silver" },
+      { hand: "дясна ръка", place: "2 място", color: "silver" },
+    ],
+    cover: davidPodium,
+    bio: [
+      'Давид Каневски е един от младите състезатели на „Берое Армрестлинг", който се изкачва уверено по подиумите на националната сцена. На Републиканското първенство по канадска борба 2026 г. в Панагюрище той се качи на второто стъпало и с двете ръце — два сребърни медала, извоювани с характер и техника.',
+      "Давид тренира целогодишно в залата на клуба и съчетава силова работа с активна работа върху техника на масата. Стилът му е базиран на бърз старт, контрол на китката и хладнокръвие в ключовите моменти на мача.",
+      'Двата сребърни медала са поредно доказателство, че следващото поколение на „Берое" има характер, дисциплина и амбиция да се бори за върха.',
+    ],
+    gallery: [
+      { src: davidPodium, alt: "Давид Каневски на подиума — Републиканско първенство 2026" },
+      { src: davidMatch1, alt: "Давид Каневски в схватка на масата — Републиканско първенство 2026" },
+      { src: davidMatch2, alt: "Давид Каневски срещу съперник — Републиканско първенство 2026" },
     ],
   },
 ];
@@ -339,9 +360,11 @@ const AchievementsTimeline = () => {
                         </span>
                       ))}
                     </div>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Категория {c.category}
-                    </p>
+                    {c.category && (
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        Категория {c.category}
+                      </p>
+                    )}
                     <span className="mt-3 inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-warning">
                       Отвори профил <ChevronRight className="h-4 w-4" />
                     </span>
