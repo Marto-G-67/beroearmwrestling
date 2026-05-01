@@ -27,6 +27,8 @@ import cholakovPodium from "@/assets/comp-2026-cholakov-podium.jpg";
 import cholakovPodium2 from "@/assets/comp-2026-cholakov-podium-2.jpg";
 import cholakovMatch from "@/assets/comp-2026-cholakov-match.jpg";
 import worldsHero from "@/assets/comp-worlds-hero.jpg";
+import worldsTeam from "@/assets/comp-worlds-team.jpg";
+import shterioWorldsClip from "@/assets/comp-worlds-shterio-match.mp4";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -182,20 +184,23 @@ const competitorsWorlds: CompetitorData[] = [
     medals: [
       { hand: "победа", place: "Победа", color: "gold" },
     ],
-    cover: shterioMatch,
+    cover: worldsTeam,
     bio: [
       'Щерьо Щерев представи „Берое Армрестлинг" и България на Световното първенство по канадска борба — най-високата сцена в спорта. В категория 80 кг той се изправи срещу елитен международен съперник и излезе победител в драматичен мач, изпълнен с натиск, контрол и характер.',
       "Победата на световна сцена е резултат от години упорита работа в залата на клуба — силова подготовка, техника на куката, контрол на китката и психологическа устойчивост в най-важните моменти.",
       'Този успех поставя Щерьо сред имената, с които „Берое" вече се представя не само на национална, но и на световна сцена.',
     ],
     gallery: [
-      { src: shterioMatch, alt: "Щерьо Щерев в схватка на Световното първенство" },
-      { src: shterioPodium, alt: "Щерьо Щерев — момент от Световното първенство" },
+      { src: worldsTeam, alt: "Националният отбор на България на Световното първенство по канадска борба — Албена" },
     ],
-    // Add YouTube link or uploaded MP4 here. Examples:
-    // { type: "youtube", src: "https://youtu.be/VIDEO_ID", title: "Победният мач" }
-    // { type: "file",    src: shterioWorldsClip, title: "Победният мач" }
-    videos: [],
+    videos: [
+      {
+        type: "file",
+        src: shterioWorldsClip,
+        title: "Победният мач на Щерьо Щерев — Световно първенство",
+        poster: worldsTeam,
+      },
+    ],
   },
 ];
 
@@ -207,7 +212,7 @@ const achievements = [
     text: 'Първата голяма крачка на „Берое Армрестлинг" на световна сцена — Щерьо Щерев надви елитен международен съперник в категория 80 кг.',
     highlight: true,
     competitorsId: "worlds",
-    image: worldsHero,
+    image: worldsTeam,
     badge: "World",
   },
   {
