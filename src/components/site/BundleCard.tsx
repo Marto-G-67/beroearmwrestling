@@ -3,7 +3,6 @@ import { Bundle } from "@/data/bundles";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import Countdown from "./Countdown";
 import { Package } from "lucide-react";
 
 const BundleCard = ({ bundle }: { bundle: Bundle }) => {
@@ -55,11 +54,6 @@ const BundleCard = ({ bundle }: { bundle: Bundle }) => {
           ))}
         </ul>
 
-        {bundle.endsAt && (
-          <div className="mt-3">
-            <Countdown endsAt={bundle.endsAt} label="Sale ends in" />
-          </div>
-        )}
 
         <div className="mt-4 flex items-end justify-between">
           <div>
