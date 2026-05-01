@@ -2,7 +2,6 @@ import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import CartDrawer from "./CartDrawer";
-import DiscordFloating from "./DiscordFloating";
 
 const SiteLayout = () => (
   <div className="min-h-screen flex flex-col">
@@ -12,7 +11,6 @@ const SiteLayout = () => (
     </main>
     <Footer />
     <CartDrawer />
-    <DiscordFloating />
   </div>
 );
 
