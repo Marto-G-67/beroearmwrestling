@@ -30,6 +30,8 @@ import worldsHero from "@/assets/comp-worlds-hero.jpg";
 import worldsTeam from "@/assets/comp-worlds-team.jpg";
 import shterioWorldsPodium from "@/assets/comp-worlds-shterio-podium.jpg";
 import shterioWorldsClip from "@/assets/comp-worlds-shterio-match.mp4";
+import malamirWorldsPodium from "@/assets/comp-worlds-malamir-podium.jpg";
+import malamirWorldsClip from "@/assets/comp-worlds-malamir-match.mp4";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -191,15 +193,35 @@ const competitorsWorlds: CompetitorData[] = [
       "Победата на световна сцена е резултат от години упорита работа в залата на клуба — силова подготовка, техника на куката, контрол на китката и психологическа устойчивост в най-важните моменти.",
       'Този успех поставя Щерьо сред имената, с които „Берое" вече се представя не само на национална, но и на световна сцена.',
     ],
-    gallery: [
-      { src: shterioWorldsPodium, alt: "Щерьо Щерев на подиума — Световно първенство" },
-    ],
+    gallery: [],
     videos: [
       {
         type: "file",
         src: shterioWorldsClip,
         title: "Победният мач на Щерьо Щерев — Световно първенство",
         poster: shterioWorldsPodium,
+      },
+    ],
+  },
+  {
+    name: "Маламир Михалев",
+    category: "70+ кг (юноши до 15 г.)",
+    medals: [
+      { hand: "победа", place: "Победа", color: "gold" },
+    ],
+    cover: malamirWorldsPodium,
+    bio: [
+      'На Световното първенство по канадска борба, в категория 70+ кг при юношите до 15 години, Маламир Михалев записа едно от най-силните представяния за „Берое Армрестлинг" — победа над казахстански състезател, който го превъзхождаше чисто теглово.',
+      'Въпреки разликата в килограмите, Маламир излезе на масата с хладнокръвие, точна техника и характер на доказан боец. С контрол на китката, силен натиск и стабилна позиция той наложи своя стил и стигна до победата срещу значително по-тежък опонент — резултат, който говори за класа, а не за килограми.',
+      'Този мач е поредното доказателство, че възпитаниците на „Берое" се представят на световно ниво още от ранна възраст и че бъдещето на българската канадска борба расте именно тук — в залата на клуба.',
+    ],
+    gallery: [],
+    videos: [
+      {
+        type: "file",
+        src: malamirWorldsClip,
+        title: "Победата на Маламир Михалев срещу състезател от Казахстан — Световно първенство",
+        poster: malamirWorldsPodium,
       },
     ],
   },
