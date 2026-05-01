@@ -5,7 +5,9 @@ import StatsCounters from "@/components/club/StatsCounters";
 import AboutClub from "@/components/club/AboutClub";
 import PresidentSection from "@/components/club/PresidentSection";
 import AchievementsTimeline from "@/components/club/AchievementsTimeline";
+import CodeOfTheLion from "@/components/club/CodeOfTheLion";
 import Gallery from "@/components/club/Gallery";
+import Voices from "@/components/club/Voices";
 import JoinCTA from "@/components/club/JoinCTA";
 import ContactSection from "@/components/club/ContactSection";
 import ClubFooter from "@/components/club/ClubFooter";
@@ -24,7 +26,9 @@ const Index = () => {
         <AboutClub />
         <PresidentSection />
         <AchievementsTimeline />
+        <CodeOfTheLion />
         <Gallery />
+        <Voices />
         <JoinCTA />
         <ContactSection />
       </main>

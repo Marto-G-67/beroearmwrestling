@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Flame, ArrowRight } from "lucide-react";
+import { CheckCircle2, Flame, ArrowRight, Phone } from "lucide-react";
 
 const benefits = [
   "Тренировки с опитни треньори и активни състезатели",
@@ -7,6 +7,13 @@ const benefits = [
   "Подготовка за национални, европейски и световни турнири",
   "Сила, техника, кондиция и контрол на захвата",
   "Отборен дух и приятелство за цял живот",
+];
+
+const steps = [
+  { n: "01", t: "Обади се", d: "Един телефонен разговор и ти запазваме място на първа тренировка." },
+  { n: "02", t: "Ела на пробна", d: "Първата тренировка е безплатна. Без екипировка, без условия." },
+  { n: "03", t: "Влез в отбора", d: "Програма според целите ти — фитнес, спорт или състезания." },
+  { n: "04", t: "Качи се на масата", d: "Когато си готов — те водим на национални и международни турнири." },
 ];
 
 const JoinCTA = () => (
@@ -42,8 +49,8 @@ const JoinCTA = () => (
             size="lg"
             className="btn-glow bg-gradient-to-r from-primary to-accent text-primary-foreground font-semibold tracking-wider px-8 h-14"
           >
-            <a href="#contact">
-              <Flame className="mr-2 h-4 w-4" /> Запиши се
+            <a href="tel:0887446670">
+              <Phone className="mr-2 h-4 w-4" /> Обади се сега
               <ArrowRight className="ml-1 h-4 w-4" />
             </a>
           </Button>
@@ -61,27 +68,30 @@ const JoinCTA = () => (
       <div className="glass rounded-3xl p-8 md:p-10 border border-primary/30 relative overflow-hidden">
         <div className="absolute -top-20 -right-20 h-60 w-60 bg-primary/30 rounded-full blur-3xl" />
         <div className="relative">
-          <div className="text-xs uppercase tracking-[0.3em] text-primary">Разписание</div>
-          <h3 className="mt-2 font-display text-3xl text-foreground">Тренировки</h3>
-          <ul className="mt-6 divide-y divide-border">
-            {[
-              { d: "Понеделник", t: "18:00 – 20:00" },
-              { d: "Сряда", t: "18:00 – 20:00" },
-              { d: "Петък", t: "18:00 – 20:00" },
-              { d: "Събота", t: "10:00 – 12:00 (отборна)" },
-            ].map((r) => (
-              <li
-                key={r.d}
-                className="flex items-center justify-between py-3 text-sm md:text-base"
-              >
-                <span className="text-foreground">{r.d}</span>
-                <span className="text-muted-foreground tracking-wider">{r.t}</span>
+          <div className="text-xs uppercase tracking-[0.3em] text-primary">Пътят към масата</div>
+          <h3 className="mt-2 font-display text-3xl text-foreground">4 стъпки до първата победа</h3>
+          <ul className="mt-6 space-y-5">
+            {steps.map((s) => (
+              <li key={s.n} className="flex gap-4 group">
+                <div className="shrink-0 h-12 w-12 rounded-xl bg-gradient-to-br from-primary/30 to-accent/20 border border-primary/30 flex items-center justify-center font-display text-lg text-primary group-hover:scale-110 transition-transform">
+                  {s.n}
+                </div>
+                <div>
+                  <div className="font-display text-xl text-foreground tracking-wide">{s.t}</div>
+                  <p className="text-sm text-muted-foreground mt-1">{s.d}</p>
+                </div>
               </li>
             ))}
           </ul>
-          <p className="mt-6 text-xs text-muted-foreground">
-            * Часовете на тренировки могат да бъдат коригирани. Свържи се с нас за актуална информация.
-          </p>
+          <div className="mt-7 pt-6 border-t border-border flex items-center justify-between">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Телефон</div>
+              <a href="tel:0887446670" className="font-display text-2xl text-foreground hover:text-primary transition-colors">
+                088 744 6670
+              </a>
+            </div>
+            <Flame className="h-8 w-8 text-warning" />
+          </div>
         </div>
       </div>
     </div>
