@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
-import { useLoyalty } from "@/context/LoyaltyContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Link, useNavigate } from "react-router-dom";
-import { Lock, ShoppingBag, CheckCircle2, Coins } from "lucide-react";
+import { Lock, ShoppingBag, CheckCircle2, MessageCircle, Copy, Ticket, Receipt } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
 import RobloxUsernameField from "@/components/site/RobloxUsernameField";
-import LoyaltyCard from "@/components/site/LoyaltyCard";
+
+// TODO: replace with the real BCM's Shop Discord invite
+const DISCORD_INVITE = "https://discord.gg/your-invite";
 
 const schema = z.object({
   email: z.string().trim().email("Enter a valid email").max(255),
@@ -20,18 +21,12 @@ const schema = z.object({
 
 const Checkout = () => {
   const { detailed, subtotal, clear } = useCart();
-  const { addPoints, points: balance, redeem } = useLoyalty();
   const [form, setForm] = useState({ email: "", robloxUsername: "", notes: "" });
-  const [redeemPoints, setRedeemPoints] = useState(false);
   const [done, setDone] = useState(false);
-  const [earned, setEarned] = useState(0);
+  const [orderId, setOrderId] = useState("");
   const nav = useNavigate();
 
-  // 100 BCM coins = $5 off, capped at order subtotal
-  const maxRedeemable = Math.min(balance, Math.floor(subtotal / 5) * 100);
-  const discount = redeemPoints ? (maxRedeemable / 100) * 5 : 0;
-  const total = Math.max(0, subtotal - discount);
-  const willEarn = Math.floor(total);
+  const total = subtotal;
 
   if (detailed.length === 0 && !done) {
     return (
@@ -50,32 +45,82 @@ const Checkout = () => {
       toast.error(parsed.error.issues[0].message);
       return;
     }
-    if (redeemPoints && maxRedeemable > 0) {
-      redeem(maxRedeemable);
-    }
-    addPoints(willEarn);
-    setEarned(willEarn);
-    toast.success(`Order placed! +${willEarn} BCM coins earned.`);
+    const id = "BCM-" + Math.random().toString(36).slice(2, 8).toUpperCase();
+    setOrderId(id);
+    toast.success("Order placed! Join our Discord to claim your items.");
     clear();
     setDone(true);
   };
 
   if (done) {
     return (
-      <div className="container py-24 text-center max-w-xl">
-        <CheckCircle2 className="h-16 w-16 mx-auto text-success" />
-        <h1 className="font-display text-3xl md:text-4xl font-bold mt-4 gradient-text">Order received!</h1>
-        <p className="text-muted-foreground mt-3">
-          We'll meet you in-game on <span className="text-foreground font-semibold">{form.robloxUsername}</span> and deliver your items shortly.
-          A confirmation will be sent to <span className="text-foreground">{form.email}</span>.
-        </p>
-        {earned > 0 && (
-          <div className="mt-6 inline-flex items-center gap-2 glass rounded-full px-5 py-2.5">
-            <Coins className="h-4 w-4 text-warning" />
-            <span className="text-sm">You earned <span className="font-bold gradient-text">+{earned} BCM coins</span></span>
+      <div className="container py-16 max-w-2xl">
+        <div className="text-center">
+          <CheckCircle2 className="h-16 w-16 mx-auto text-success" />
+          <h1 className="font-display text-3xl md:text-4xl font-bold mt-4 gradient-text">Order received!</h1>
+          <p className="text-muted-foreground mt-3">
+            Order <span className="text-foreground font-mono font-semibold">{orderId}</span> · confirmation sent to{" "}
+            <span className="text-foreground">{form.email}</span>
+          </p>
+        </div>
+
+        <div className="glass rounded-2xl p-6 mt-8 space-y-5">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-gradient-primary grid place-items-center">
+              <MessageCircle className="h-5 w-5 text-primary-foreground" />
+            </div>
+            <div>
+              <h2 className="font-display text-lg font-semibold">Claim your items on Discord</h2>
+              <p className="text-xs text-muted-foreground">Delivery is handled in our private server.</p>
+            </div>
           </div>
-        )}
-        <div className="mt-8 flex gap-3 justify-center">
+
+          <ol className="space-y-3 text-sm">
+            <li className="flex gap-3">
+              <span className="h-6 w-6 shrink-0 rounded-full bg-primary/15 text-primary grid place-items-center font-semibold text-xs">1</span>
+              <span>Join the BCM's Shop Discord using the link below.</span>
+            </li>
+            <li className="flex gap-3">
+              <span className="h-6 w-6 shrink-0 rounded-full bg-primary/15 text-primary grid place-items-center font-semibold text-xs">2</span>
+              <span>Open a <span className="inline-flex items-center gap-1 font-semibold"><Ticket className="h-3.5 w-3.5" />ticket</span> in the <span className="font-mono text-xs px-1.5 py-0.5 rounded bg-muted">#claim-order</span> channel.</span>
+            </li>
+            <li className="flex gap-3">
+              <span className="h-6 w-6 shrink-0 rounded-full bg-primary/15 text-primary grid place-items-center font-semibold text-xs">3</span>
+              <span className="flex-1">
+                Send a <span className="inline-flex items-center gap-1 font-semibold"><Receipt className="h-3.5 w-3.5" />picture of your receipt</span>, your order ID,
+                and your Roblox username (<span className="text-foreground font-semibold">{form.robloxUsername}</span>).
+              </span>
+            </li>
+            <li className="flex gap-3">
+              <span className="h-6 w-6 shrink-0 rounded-full bg-primary/15 text-primary grid place-items-center font-semibold text-xs">4</span>
+              <span>A staff member verifies your order and delivers your items in-game. Usually within minutes.</span>
+            </li>
+          </ol>
+
+          <div className="flex flex-col sm:flex-row gap-2 pt-2">
+            <Button
+              asChild
+              size="lg"
+              className="flex-1 bg-[#5865F2] hover:bg-[#4752c4] text-white font-semibold"
+            >
+              <a href={DISCORD_INVITE} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="h-4 w-4 mr-2" /> Join Discord & open ticket
+              </a>
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => {
+                navigator.clipboard.writeText(orderId);
+                toast.success("Order ID copied");
+              }}
+            >
+              <Copy className="h-4 w-4 mr-2" /> Copy order ID
+            </Button>
+          </div>
+        </div>
+
+        <div className="mt-6 flex gap-3 justify-center">
           <Button asChild variant="outline"><Link to="/products">Back to shop</Link></Button>
           <Button asChild className="bg-gradient-primary text-primary-foreground"><Link to="/">Home</Link></Button>
         </div>
@@ -86,7 +131,7 @@ const Checkout = () => {
   return (
     <div className="container py-12 max-w-5xl">
       <h1 className="font-display text-3xl md:text-5xl font-bold gradient-text">Checkout</h1>
-      <p className="text-muted-foreground mt-1">Secure payment · instant in-game delivery.</p>
+      <p className="text-muted-foreground mt-1">Secure payment · delivery via Discord ticket.</p>
 
       <form onSubmit={handleSubmit} className="mt-8 grid lg:grid-cols-[1fr_400px] gap-8">
         <div className="space-y-6">
@@ -115,25 +160,15 @@ const Checkout = () => {
             </div>
           </div>
 
-          <LoyaltyCard />
-
-          {maxRedeemable > 0 && (
-            <label className="glass rounded-2xl p-5 flex items-center gap-3 cursor-pointer hover:border-primary/50 transition">
-              <input
-                type="checkbox"
-                checked={redeemPoints}
-                onChange={(e) => setRedeemPoints(e.target.checked)}
-                className="h-4 w-4 accent-primary"
-              />
-              <div className="flex-1">
-                <div className="text-sm font-semibold flex items-center gap-2">
-                  <Coins className="h-4 w-4 text-warning" />
-                  Redeem {maxRedeemable} BCM coins
-                </div>
-                <div className="text-xs text-muted-foreground">Save ${(maxRedeemable / 100 * 5).toFixed(2)} on this order</div>
-              </div>
-            </label>
-          )}
+          <div className="glass rounded-2xl p-6">
+            <h2 className="font-display text-lg font-semibold flex items-center gap-2">
+              <MessageCircle className="h-4 w-4 text-primary" /> How delivery works
+            </h2>
+            <p className="text-sm text-muted-foreground mt-2">
+              After placing your order, you'll get a link to our private Discord. Open a ticket, send a picture of your receipt,
+              and a staff member will verify and deliver your items in-game.
+            </p>
+          </div>
 
           <div className="glass rounded-2xl p-6">
             <h2 className="font-display text-lg font-semibold flex items-center gap-2">
@@ -162,18 +197,10 @@ const Checkout = () => {
           </div>
           <div className="border-t border-border/40 mt-4 pt-4 space-y-2 text-sm">
             <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
-            {discount > 0 && (
-              <div className="flex justify-between text-warning">
-                <span>BCM coins discount</span><span>-${discount.toFixed(2)}</span>
-              </div>
-            )}
             <div className="flex justify-between"><span className="text-muted-foreground">Delivery</span><span className="text-success">Free</span></div>
             <div className="flex justify-between font-display text-xl font-bold pt-2">
               <span>Total</span>
               <span className="gradient-text">${total.toFixed(2)}</span>
-            </div>
-            <div className="text-xs text-muted-foreground flex items-center gap-1.5 pt-1">
-              <Coins className="h-3 w-3 text-warning" /> You'll earn +{willEarn} BCM coins
             </div>
           </div>
           <Button type="submit" size="lg" className="w-full mt-5 btn-glow bg-gradient-primary text-primary-foreground font-semibold tracking-wider">
