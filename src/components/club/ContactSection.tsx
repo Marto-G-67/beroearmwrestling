@@ -117,7 +117,7 @@ const ContactSection = () => {
               name="msg"
               rows={5}
               required
-              placeholder="Кажи ни защо искаш да тренираш в „Берое"…"
+              placeholder='Кажи ни защо искаш да тренираш в „Берое“…'
             />
           </div>
           <Button
