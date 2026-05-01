@@ -11,6 +11,7 @@ import comp2025_5 from "@/assets/comp-2025-5.jpg";
 import comp2025_6 from "@/assets/comp-2025-6.jpg";
 import antonPodium from "@/assets/comp-2026-anton-podium.jpg";
 import antonMatch from "@/assets/comp-2026-anton-match.jpg";
+import antonPodium2 from "@/assets/comp-2026-anton-podium-2.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -62,6 +63,7 @@ const competitors2026: CompetitorData[] = [
     gallery: [
       { src: antonPodium, alt: "Антон Петров на подиума — Републиканско първенство 2026" },
       { src: antonMatch, alt: "Антон Петров в схватка на масата — Републиканско първенство 2026" },
+      { src: antonPodium2, alt: "Антон Петров на подиума в категория 90+ кг — Републиканско първенство 2026" },
     ],
   },
 ];
