@@ -1,8 +1,6 @@
 import Hero from "@/components/site/Hero";
 import ProductCard from "@/components/site/ProductCard";
 import BundleCard from "@/components/site/BundleCard";
-import ActivityTicker from "@/components/site/ActivityTicker";
-import ReviewsHighlight from "@/components/site/ReviewsHighlight";
 import RecentlyViewed from "@/components/site/RecentlyViewed";
 import { CATEGORIES, PRODUCTS } from "@/data/products";
 import { BUNDLES } from "@/data/bundles";
@@ -17,7 +15,6 @@ const Index = () => {
   return (
     <>
       <Hero />
-      <ActivityTicker />
 
       {/* Bundles teaser */}
       <section className="container py-16">
@@ -89,8 +86,6 @@ const Index = () => {
           {featured.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       </section>
-
-      <ReviewsHighlight />
 
       <RecentlyViewed />
 
