@@ -168,7 +168,33 @@ const AchievementsTimeline = () => {
                     />
                   </div>
 
-                  <div className="hidden md:block" />
+                  {a.image ? (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        a.competitionId && setOpenId(a.competitionId)
+                      }
+                      aria-label={`Виж пълната статия: ${a.title}`}
+                      className="group relative block w-full overflow-hidden rounded-2xl border border-border/60 glass shadow-elevated focus:outline-none focus:ring-2 focus:ring-warning"
+                    >
+                      <img
+                        src={a.image}
+                        alt={a.title}
+                        loading="lazy"
+                        className="w-full h-56 md:h-72 object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs uppercase tracking-[0.3em] text-warning">
+                        <span className="inline-flex items-center gap-2">
+                          <BookOpen className="h-4 w-4" />
+                          Отвори статията
+                        </span>
+                        <span className="text-foreground/80">{a.year}</span>
+                      </div>
+                    </button>
+                  ) : (
+                    <div className="hidden md:block" />
+                  )}
                 </li>
               );
             })}
