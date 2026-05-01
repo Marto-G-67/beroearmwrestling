@@ -8,11 +8,11 @@ type LoyaltyCtx = {
   redeem: (n: number) => boolean;
 };
 
-const TIERS = [
+const TIERS: { name: string; min: number; perks: string[]; color: string }[] = [
   { name: "Sailor", min: 0, perks: ["Earn 1 BCM coin per $1 spent"], color: "hsl(220 30% 70%)" },
   { name: "Captain", min: 100, perks: ["+10% bonus coins", "Priority delivery queue"], color: "hsl(265 89% 66%)" },
   { name: "Yonko", min: 500, perks: ["+25% bonus coins", "VIP support", "Exclusive bundles"], color: "hsl(40 95% 60%)" },
-] as const;
+];
 
 const KEY = "bcm-loyalty-v1";
 const Ctx = createContext<LoyaltyCtx | null>(null);
