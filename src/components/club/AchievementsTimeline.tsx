@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Trophy, Medal, Star, Flag, BookOpen, Users, ChevronRight } from "lucide-react";
+import { Trophy, Medal, Star, Flag, BookOpen, Users, ChevronRight, Globe } from "lucide-react";
 import CompetitionModal, { CompetitionData } from "./CompetitionModal";
 import CompetitorModal, { CompetitorData } from "./CompetitorModal";
 import comp2025 from "@/assets/comp-2025-team.jpg";
@@ -26,6 +26,7 @@ import milkyMatch2 from "@/assets/comp-2026-milky-match-2.jpg";
 import cholakovPodium from "@/assets/comp-2026-cholakov-podium.jpg";
 import cholakovPodium2 from "@/assets/comp-2026-cholakov-podium-2.jpg";
 import cholakovMatch from "@/assets/comp-2026-cholakov-match.jpg";
+import worldsHero from "@/assets/comp-worlds-hero.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -174,7 +175,41 @@ const competitors2026: CompetitorData[] = [
   },
 ];
 
+const competitorsWorlds: CompetitorData[] = [
+  {
+    name: "Щерьо Щерев",
+    category: "80 кг",
+    medals: [
+      { hand: "победа", place: "Победа", color: "gold" },
+    ],
+    cover: shterioMatch,
+    bio: [
+      'Щерьо Щерев представи „Берое Армрестлинг" и България на Световното първенство по канадска борба — най-високата сцена в спорта. В категория 80 кг той се изправи срещу елитен международен съперник и излезе победител в драматичен мач, изпълнен с натиск, контрол и характер.',
+      "Победата на световна сцена е резултат от години упорита работа в залата на клуба — силова подготовка, техника на куката, контрол на китката и психологическа устойчивост в най-важните моменти.",
+      'Този успех поставя Щерьо сред имената, с които „Берое" вече се представя не само на национална, но и на световна сцена.',
+    ],
+    gallery: [
+      { src: shterioMatch, alt: "Щерьо Щерев в схватка на Световното първенство" },
+      { src: shterioPodium, alt: "Щерьо Щерев — момент от Световното първенство" },
+    ],
+    // Add YouTube link or uploaded MP4 here. Examples:
+    // { type: "youtube", src: "https://youtu.be/VIDEO_ID", title: "Победният мач" }
+    // { type: "file",    src: shterioWorldsClip, title: "Победният мач" }
+    videos: [],
+  },
+];
+
 const achievements = [
+  {
+    year: "Световно",
+    icon: Globe,
+    title: "Световно първенство — победа за Щерьо Щерев",
+    text: 'Първата голяма крачка на „Берое Армрестлинг" на световна сцена — Щерьо Щерев надви елитен международен съперник в категория 80 кг.',
+    highlight: true,
+    competitorsId: "worlds",
+    image: worldsHero,
+    badge: "World",
+  },
   {
     year: "2026",
     icon: Medal,
@@ -410,6 +445,87 @@ const AchievementsTimeline = () => {
                         >
                           <Medal className="h-3 w-3" />
                           {m.place} {m.hand === "лява ръка" ? "лява" : "дясна"}
+                        </span>
+                      ))}
+                    </div>
+                    {c.category && (
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        Категория {c.category}
+                      </p>
+                    )}
+                    <span className="mt-3 inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-warning">
+                      Отвори профил <ChevronRight className="h-4 w-4" />
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openCompetitorsId === "worlds" && (
+        <div
+          className="fixed inset-0 z-[80] bg-background/95 backdrop-blur-md overflow-y-auto animate-fade-up"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setOpenCompetitorsId(null)}
+        >
+          <div
+            className="min-h-full container max-w-5xl py-10 md:py-16"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setOpenCompetitorsId(null)}
+              aria-label="Затвори"
+              className="sticky top-4 ml-auto flex h-11 w-11 rounded-full bg-primary text-primary-foreground hover:opacity-90 items-center justify-center transition-colors z-10 shadow-elevated"
+            >
+              ✕
+            </button>
+            <div className="text-center max-w-3xl mx-auto">
+              <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.4em] text-warning">
+                <Globe className="h-4 w-4" /> Световна сцена
+              </span>
+              <h2 className="mt-3 font-display text-3xl md:text-6xl tracking-tight gold-text">
+                Световно първенство
+              </h2>
+              <p className="mt-4 text-muted-foreground">
+                Най-високата сцена в канадската борба. Кликни върху състезател, за да видиш биография, мач и видео.
+              </p>
+            </div>
+
+            <div className="mt-10 grid sm:grid-cols-2 gap-5">
+              {competitorsWorlds.map((c) => (
+                <button
+                  key={c.name}
+                  type="button"
+                  onClick={() => setOpenCompetitor(c)}
+                  className="group relative text-left overflow-hidden rounded-2xl border border-warning/40 glass shadow-gold card-hover focus:outline-none focus:ring-2 focus:ring-warning"
+                >
+                  <div className="relative h-56 md:h-64 overflow-hidden">
+                    <img
+                      src={c.cover}
+                      alt={c.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+                    <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 border border-warning/60 bg-background/70 backdrop-blur text-[10px] uppercase tracking-widest text-warning">
+                      <Globe className="h-3 w-3" /> World
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="font-display text-2xl text-foreground group-hover:text-warning transition-colors">
+                        {c.name}
+                      </h3>
+                      {c.medals.map((m, i) => (
+                        <span
+                          key={i}
+                          className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 border text-[10px] uppercase tracking-widest ${medalChip(m.color)}`}
+                        >
+                          <Medal className="h-3 w-3" />
+                          {m.place}
                         </span>
                       ))}
                     </div>

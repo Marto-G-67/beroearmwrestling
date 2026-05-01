@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-import { X, Medal, Weight, Expand } from "lucide-react";
+import { X, Medal, Weight, Expand, Play } from "lucide-react";
 import Lightbox from "./Lightbox";
+
+export interface CompetitorVideo {
+  type: "youtube" | "vimeo" | "file";
+  src: string;
+  title?: string;
+  poster?: string;
+}
 
 export interface CompetitorData {
   name: string;
@@ -9,7 +16,24 @@ export interface CompetitorData {
   cover: string;
   bio: string[];
   gallery: { src: string; alt: string }[];
+  videos?: CompetitorVideo[];
 }
+
+const toEmbedUrl = (v: CompetitorVideo): string => {
+  if (v.type === "youtube") {
+    // Accept full URLs or bare IDs
+    const idMatch =
+      v.src.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+    const id = idMatch ? idMatch[1] : v.src;
+    return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
+  }
+  if (v.type === "vimeo") {
+    const idMatch = v.src.match(/vimeo\.com\/(\d+)/);
+    const id = idMatch ? idMatch[1] : v.src;
+    return `https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0`;
+  }
+  return v.src;
+};
 
 interface Props {
   data: CompetitorData;
@@ -94,6 +118,54 @@ const CompetitorModal = ({ data, onClose }: Props) => {
             ))}
           </div>
         </article>
+
+        {/* Videos */}
+        {data.videos && data.videos.length > 0 && (
+          <div className="mt-12">
+            <h3 className="font-display text-2xl md:text-4xl text-foreground">
+              Видео <span className="gradient-text">от мача</span>
+            </h3>
+            <p className="text-sm text-muted-foreground mt-2">
+              Гледай ключови моменти от срещите на {data.name}.
+            </p>
+            <div className="mt-6 space-y-6">
+              {data.videos.map((v, i) => (
+                <figure
+                  key={i}
+                  className="relative overflow-hidden rounded-2xl border border-border/60 glass shadow-elevated"
+                >
+                  <div className="relative w-full aspect-video bg-background">
+                    {v.type === "file" ? (
+                      <video
+                        src={v.src}
+                        poster={v.poster}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        className="absolute inset-0 w-full h-full object-contain bg-background"
+                      />
+                    ) : (
+                      <iframe
+                        src={toEmbedUrl(v)}
+                        title={v.title ?? `${data.name} — видео ${i + 1}`}
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        className="absolute inset-0 w-full h-full"
+                      />
+                    )}
+                  </div>
+                  {v.title && (
+                    <figcaption className="flex items-center gap-2 px-5 py-3 text-sm text-foreground border-t border-border/60">
+                      <Play className="h-4 w-4 text-warning" />
+                      {v.title}
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Gallery */}
         {data.gallery.length > 0 && (

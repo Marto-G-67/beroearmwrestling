@@ -1,80 +1,48 @@
+## Goal
 
-# Beroe Armwrestling Club — нов сайт
+Add a new **"Световно първенство"** entry to the achievements timeline (alongside 2026 / 2025), with competitor cards that can show **video clips** (YouTube/Vimeo embeds OR uploaded MP4 files). Start with **one card for Щерьо Щерев** (defeated his opponent at the World Championship), with the video embedded inside his card. Structured so more competitor cards can be added easily.
 
-## Какво ще направя
+## What you'll see on the page
 
-Поставям на пауза работата по BCM's Shop (всичко е запазено и ще го продължим по всяко време). Преструктурирам проекта в нов сайт за **Спортен клуб по канадска борба „Берое"** — изцяло на български, с тъмно-зелена/черна тема, която съвпада с логото (лъв на щит), и с епичен фокус върху отбора, президента Георги Чолаков и постиженията.
+- A new card in the achievements timeline marked **"Световно първенство"** (with a globe icon and a gold/world-event accent so it stands out from national events).
+- Inside it: a list of competitor cards, exactly like the 2026 section. First card = **Щерьо Щерев**.
+- Clicking Щерьо's card opens his detail modal — same layout as before, but with a new **"Видео"** section above the photo gallery showing the match clip with play controls.
+- A second placeholder competitor slot is reserved (you can give me the name + video later and I'll fill it in).
 
-## Дизайн и тема
+## How videos will work
 
-- **Палитра** (от логото): дълбоко черно `#0A0F0A`, горско зелено `#0F3D2E`, акцент изумрудено `#1FAA59`, златно за медали/постижения `#E8B339`, червено-бяло-зелени български акценти за специални места.
-- **Шрифтове**: `Bebas Neue` / `Oswald` за заглавия (силни, спортни), `Inter` за основен текст. Кирилицата се поддържа от двата.
-- **Атмосфера**: тъмен, кинематографичен, с огнено-зелен мъгляв градиент като в логото, фини частици/glow ефекти, силна типография в главни букви и динамични hover анимации.
-- **Лого** (image 3) — във header-а, hero и footer.
+The competitor data model gets a new optional `videos` field. Each video can be either:
+- A **link** (YouTube or Vimeo URL) — embedded as a responsive iframe player.
+- An **uploaded file** — played with the native HTML5 `<video>` tag with controls.
 
-## Структура на сайта (single-page с навигация + отделни страници за дълбочина)
+For uploads, files go into `src/assets/` (same place as the photos) and are imported as ES modules — same pattern already used for images. No backend/storage needed since these are static curated highlights, not user uploads.
 
-```text
-Header (sticky, тъмен glass, лого + меню + CTA „Тренирай с нас")
- ├─ Начало (Hero)            — image 4 (отборна снимка) като фон с градиент,
- │                              лого център, тагове „Стара Загора • Канадска борба",
- │                              CTA „Присъедини се" / „Виж постиженията"
- ├─ За клуба                 — мисия, история, локация, цифри (брой медали, шампиони, години)
- ├─ Президент                — Георги Чолаков, image 2 като голям визуал,
- │                              биография на база статията от nbp.bg, ключови постижения
- ├─ Треньори                 — карти 2-3 (placeholder, лесно се редактират визуално)
- ├─ Постижения (EPIC секция) — timeline + grid с медали:
- │                              • 13 медала + 6 квоти за СП (2025)
- │                              • злато от Девин (Христо Димов, 17 г.)
- │                              • златни медали от Селановци
- │                              • европейски и световни участия
- │                              анимирана броеница (counters), златни glow карти
- ├─ Галерия                  — masonry с image 2 и image 4 + плейсхолдъри
- │                              (ще те питам за още снимки след одобрение)
- ├─ Събития / Турнири        — предстоящи и минали (placeholder data, лесно се
- │                              редактира; структурата е готова за бъдеща CMS)
- ├─ Присъедини се            — защо да тренираш канадска борба, какво предлага клубът,
- │                              разписание (placeholder), форма за контакт
- ├─ Контакти + Социални      — адрес (Стара Загора), телефон, имейл, FB/IG/YouTube
- └─ Footer                   — лого, навигация, права, връзки към социални мрежи
-```
+For this first card, please send me either:
+- The YouTube/Vimeo link of Щерьо's winning match, **or**
+- The MP4 file (drag-and-drop in chat).
 
-## Съдържание (на български, готово за продукция)
+If you don't have the clip ready yet, I'll wire up the card with a "video coming soon" placeholder and you can drop the file/link later.
 
-- **Hero подзаглавие**: „Канадска борба • Стара Загора • От 1996 — Силата на лъва"
-- **Биография на Георги Чолаков** (от статията 2017 + контекст):
-  > „Президент на СК „Берое Канадска борба". Многократен медалист от международни и национални турнири — двукратен златен медалист от Международния турнир в Селановци, абсолютна купа за лява ръка от републиканското първенство за студенти, организатор на национални студентски състезания. Двигателят зад успехите на клуба."
-- **Постижения (примери от статиите)**:
-  - 2025 — 13 медала и 6 квоти за Световното първенство
-  - 2024 — Първо място за Христо Димов (17 г.), турнир в Девин
-  - 2017 — Две златни в Селановци (категории до 80 и 85 кг)
-  - Републикански шампиони, европейски и световни участия
+## Technical changes
 
-## Технически детайли
+1. **`src/components/club/CompetitorModal.tsx`**
+   - Extend `CompetitorData` interface: add `videos?: { type: "youtube" | "vimeo" | "file"; src: string; title?: string; poster?: string }[]`.
+   - Add a "Видео" section above the gallery that renders:
+     - YouTube/Vimeo → responsive 16:9 `<iframe>` with proper embed URL conversion.
+     - File → HTML5 `<video controls poster={poster}>` with the imported asset as `src`.
+   - Multiple videos render stacked vertically, each in a glass-styled card.
 
-- **Стек**: запазвам React + Vite + Tailwind + shadcn (както е). Премахвам shop-related страници от рутирането (`/products`, `/checkout`, `/cart`, `/bundles`, `/reviews`, `/blog`, `/status`) — файловете остават в repo за бъдещо връщане към BCM, но не се рутират.
-- **Нови страници**: `src/pages/Index.tsx` става главна с всички секции, плюс `Achievements.tsx`, `Trainers.tsx`, `Join.tsx` за разширени изгледи (по желание; основното е one-page).
-- **Нови компоненти** в `src/components/club/`:
-  `ClubHero`, `AboutClub`, `PresidentSection`, `TrainersGrid`, `AchievementsTimeline`, `StatsCounters`, `Gallery`, `EventsList`, `JoinCTA`, `ClubHeader`, `ClubFooter`, `ContactSection`.
-- **Тема**: пълно пренаписване на CSS променливите в `src/index.css` от лилаво-неоново към зелено-черна палитра; `tailwind.config.ts` остава, само токените се променят (всички съществуващи UI компоненти автоматично се пребоядисват).
-- **Активи**:
-  - `image-2.png` → `src/assets/president-cholakov.png`
-  - `image-3.png` → `src/assets/beroe-logo.png` (също в `public/` за favicon/OG)
-  - `image-4.png` → `src/assets/team-photo.jpg`
-- **SEO**: обновен `index.html` (title/description/OG на български), favicon = логото, OG = логото на градиент.
-- **i18n**: целият сайт е на български. Lang атрибут `<html lang="bg">`.
-- **Достъпност**: контраст AA на тъмната тема, alt текстове на български, focus states.
+2. **`src/components/club/AchievementsTimeline.tsx`**
+   - Add a new entry for "Световно първенство" placed at the top of the timeline (above 2026).
+   - Create a `competitorsWorlds` array containing Щерьо Щерев's profile (reusing his existing photos `comp-2026-shterio-podium.jpg` and `comp-2026-shterio-match.jpg`, plus the new video).
+   - Add the World Championship section's UI with a distinct gold/world-event treatment (globe icon, "World" badge) so users immediately see it's the headline event.
 
-## Какво ми трябва от теб (след одобрение на плана)
+3. **Asset handling**
+   - If you provide an MP4: I save it to `src/assets/worlds-shterio-match.mp4` and import it. Vite handles bundling.
+   - If you provide a YouTube link: nothing to import — the URL goes straight into the data.
 
-1. Допълнителни снимки за галерията (тренировки, турнири, медали) — drag-and-drop в чата.
-2. Имена и снимки на треньорите (ако искаш конкретни — иначе оставям placeholder).
-3. Адрес на залата, телефон и имейл за контакт.
-4. Линкове към Facebook / Instagram страниците на клуба, ако има.
+## Open question
 
-Можеш да изпратиш всичко това по-късно — започвам с публично достъпните данни и плейсхолдъри, които лесно ще обновиш чрез Visual Edits.
+Do you have Щерьо's video ready to send now (YouTube link or MP4 file), or should I scaffold the section with a placeholder so you can add it in the next message?
 
-## Какво НЕ правя
-
-- Не изтривам кода на BCM Shop — само го изключвам от рутирането, за да го върнем по всяко време.
-- Не добавям e-commerce, плащания, потребителски акаунти или база данни (не са необходими за този сайт). Ако по-късно поискаш форма за записване с база данни, ще използваме вече настроения Lovable Cloud.
+Once you confirm, I'll implement everything in one pass.
