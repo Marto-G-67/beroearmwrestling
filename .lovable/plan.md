@@ -1,77 +1,71 @@
-# BCM's Shop — Premium Roblox Storefront
+# Stripe Integration for BCM's Shop
 
-A refined, advanced take on the reference design: deep space dark theme with purple/blue neon, glassmorphism, animated particle hero, smooth micro-interactions, and a full e-commerce backend.
+Enable Lovable Cloud + Lovable's built-in Stripe payments, replace the simulated checkout with a real Stripe Checkout flow, and persist every paid order in the database. Discord claim instructions are only shown after Stripe confirms payment.
 
-## Brand & Visual System
+## Step 1 — Enable Lovable Cloud
+Backend for the database, edge functions, and Stripe webhook. No external account needed.
 
-- **Name:** BCM's Shop · *Your place for all of your Roblox needs*
-- **Palette:** near-black background `#0A0613`, deep violet surfaces, neon purple `#8B5CF6` + electric blue `#3B82F6` accents, soft cyan glow highlights
-- **Typography:** Space Grotesk (display, glowing) + Inter (body) — clean, modern, readable
-- **Effects:** glassmorphism cards, animated gradient borders, particle starfield in hero, glow-on-hover, subtle parallax, smooth fade/slide-in on scroll
-- **Tone:** premium gaming brand — feels trustworthy, fast, and high-end (not cheap or noisy)
+## Step 2 — Run payment eligibility check, then enable built-in Stripe
+- Run `recommend_payment_provider` against the project (digital game services → expected to recommend Stripe).
+- Enable Lovable's built-in Stripe payments. Test mode is available immediately; live mode requires you to claim/verify the Stripe account later from the Cloud dashboard.
+- Tax handling: option 3 (no tax automation) for now — simplest, since orders go through manual Discord fulfillment. Easy to upgrade later.
 
-## Site Structure
+## Step 3 — Database schema
+One `orders` table (items stored inline as jsonb — products are static in `data/products.ts`, so no need for a separate join table yet).
 
-**Public pages**
+```text
+orders
+  id              uuid pk
+  order_code      text unique           -- "BCM-XXXXXX" shown to customer
+  stripe_session_id text unique
+  roblox_username text
+  email           text                  -- collected by Stripe Checkout
+  items           jsonb                 -- [{productId,tierId,name,qty,unitPrice}]
+  subtotal_cents  int
+  total_cents     int
+  currency        text  default 'usd'
+  status          text  default 'pending'  -- pending | paid | fulfilled | cancelled
+  created_at      timestamptz default now()
+  paid_at         timestamptz
+```
 
-- **Home** — particle hero with neon "BCM's Shop" wordmark, trust badges (Instant delivery · Undetected · Roblox ready · Fast support), animated CTAs, Shop categories grid, featured products carousel, live stats counter (orders delivered, happy customers, avg delivery time), testimonials, FAQ
-- **Products** — filterable catalog (by game, price, popularity), search, product cards with glow hover, quick-add to cart
-- **Product detail** — gallery, variants/tiers, stock indicator, related items, recent reviews
-- **Cart & Checkout** — slide-in cart, Stripe checkout, order summary
-- **Order confirmation** — collects Roblox username + delivery preferences, shows fulfillment status
-- **Reviews** — aggregate page with star breakdown + filters
-- **Status** — live indicator (operational / delays / down) per game category, recent incidents
-- **Blog** — articles, guides, update posts
-- **My Account** — profile, order history with live fulfillment status, saved Roblox username
+RLS: public can `SELECT` a single row by `order_code` (used by the success page). Inserts/updates only via service-role inside edge functions. Admin policies will be added in the next round when we build the dashboard.
 
-**Admin dashboard** (role-gated)
+## Step 4 — Create Stripe products
+Use `batch_create_product` to mirror every tier from `src/data/products.ts` (Clan Rerolls, Aura/Cosmic Crates, Mythical/Secret Chests, 2x Drop / 2x Luck Gamepasses) using existing USD prices. Each Stripe price id gets stored back in a small lookup so checkout can reference them.
 
-- Orders queue (pending → in-progress → delivered) with customer Roblox username, product details, mark-delivered action
-- Product CRUD (image, name, description, tiers, stock, category, featured flag)
-- Status updates (set per-category status + post incidents)
-- Blog editor (create/edit posts, markdown)
-- Reviews moderation (approve/hide)
-- Basic analytics (revenue, top products, order volume)
+## Step 5 — Edge functions
 
-## Catalogs (seeded at launch)
+**`create-checkout`** (public, no JWT)
+- Input: cart line items + roblox_username
+- Validates cart against server-side product list (never trust client prices)
+- Generates `order_code` `BCM-XXXXXX`
+- Inserts `orders` row with status `pending`
+- Creates Stripe Checkout Session (`mode: payment`, customer email collected by Stripe, `success_url=/order/{order_code}`, `cancel_url=/checkout`)
+- Stores `stripe_session_id` on the order
+- Returns the Stripe checkout URL
 
-Blox Fruits · Anime Vanguards · Tower Defense Simulator · Robux & gift cards / other games — each as a category with sample products you can later edit in the admin.
+**`stripe-webhook`** (public, no JWT, raw-body signature verified)
+- Handles `checkout.session.completed`
+- Flips order to `paid`, sets `paid_at`, stores `email` from the session
 
-## Delivery Flow (manual fulfillment)
+**`get-order`** (public, no JWT)
+- Input: `order_code`
+- Returns minimal info (status, items, total, roblox_username) for the success page
 
-1. Customer checks out via Stripe
-2. Post-payment screen asks for Roblox username + notes
-3. Order lands in admin queue as "Pending"
-4. You deliver in-game, click "Mark delivered"
-5. Customer sees status update in My Account + email notification
+## Step 6 — Frontend changes
+- **`Checkout.tsx`**: replace simulated submit with a "Pay with Stripe" button that calls `create-checkout` and redirects to the returned Stripe URL. Roblox username field stays. Remove client-side `BCM-XXXXXX` generation.
+- **`OrderSuccess.tsx`** (new, route `/order/:code`): polls `get-order` until `status === 'paid'`, then shows the Discord claim flow (join → open ticket in `#claim-order` → paste order code + Roblox username + receipt screenshot). Until paid, shows a "Confirming payment…" state.
+- **`App.tsx`**: add the new route.
+- Cart is cleared only after Stripe redirects back with a paid order.
 
-## Tech Section *(for reference)*
+## Step 7 — Test
+Stripe test card `4242 4242 4242 4242`, any future expiry, any CVC. Verify:
+1. Checkout redirects to Stripe.
+2. After paying, `/order/BCM-XXXXXX` shows the Discord claim instructions.
+3. The `orders` row flips from `pending` → `paid` and the email is stored.
 
-- **Stack:** existing React + Vite + Tailwind + shadcn, with `framer-motion` for animations and `tsparticles` for the hero
-- **Backend:** Lovable Cloud (auth, database, edge functions, storage for product images)
-- **Payments:** Lovable's built-in Stripe payments (no account needed to start; test mode immediately)
-- **Auth:** email/password + Google sign-in; `profiles` table + separate `user_roles` table (admin role gates the dashboard via a `has_role` security-definer function)
-- **Tables:** `profiles`, `user_roles`, `categories`, `products`, `product_tiers`, `orders`, `order_items`, `reviews`, `status_updates`, `blog_posts`
-- **Edge functions:** `create-checkout`, `stripe-webhook`, `verify-payment`
-- **Security:** RLS on every table; admin actions gated server-side by `has_role`; input validation with zod
-
-## Build Order
-
-1. Design system + global theme (colors, fonts, glass/glow utilities, particle hero component)
-2. Home page with all sections + Products listing + Product detail
-3. Lovable Cloud + auth (email + Google) + profiles/roles
-4. Cart + Stripe checkout + order confirmation with Roblox username capture
-5. My Account (order history + status)
-6. Reviews, Status, Blog public pages
-7. Admin dashboard (orders queue first, then products, then content)
-8. Seed catalogs and polish animations
-
-## Out of Scope (for v1)
-
-- Automatic in-game delivery bots
-- Multi-currency switching beyond USD display
-- Affiliate/referral system
-- Live chat (use a "Fast support" contact form instead)
-
-Approve this plan and I'll start building. We can layer extras (referral, multi-currency, live chat) once the core is live.  
-and guidement on how to buy the product 
+## Out of scope (next round)
+- Admin login + role-based dashboard to view, search, and mark orders as `fulfilled`.
+- Email/Discord webhook notification when a new paid order arrives.
+- Going live on Stripe (claim/verify account when you're ready).
