@@ -212,7 +212,7 @@ const achievements = [
     text: 'Първата голяма крачка на „Берое Армрестлинг" на световна сцена — Щерьо Щерев надви елитен международен съперник в категория 80 кг.',
     highlight: true,
     competitorsId: "worlds",
-    image: worldsHero,
+    image: worldsTeam,
     badge: "World",
   },
   {
