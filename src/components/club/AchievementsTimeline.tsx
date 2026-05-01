@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Trophy, Medal, Star, Flag, BookOpen, Users, ChevronRight } from "lucide-react";
+import { Trophy, Medal, Star, Flag, BookOpen, Users, ChevronRight, Globe } from "lucide-react";
 import CompetitionModal, { CompetitionData } from "./CompetitionModal";
 import CompetitorModal, { CompetitorData } from "./CompetitorModal";
 import comp2025 from "@/assets/comp-2025-team.jpg";
