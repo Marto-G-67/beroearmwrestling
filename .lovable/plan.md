@@ -1,71 +1,80 @@
-# Stripe Integration for BCM's Shop
 
-Enable Lovable Cloud + Lovable's built-in Stripe payments, replace the simulated checkout with a real Stripe Checkout flow, and persist every paid order in the database. Discord claim instructions are only shown after Stripe confirms payment.
+# Beroe Armwrestling Club — нов сайт
 
-## Step 1 — Enable Lovable Cloud
-Backend for the database, edge functions, and Stripe webhook. No external account needed.
+## Какво ще направя
 
-## Step 2 — Run payment eligibility check, then enable built-in Stripe
-- Run `recommend_payment_provider` against the project (digital game services → expected to recommend Stripe).
-- Enable Lovable's built-in Stripe payments. Test mode is available immediately; live mode requires you to claim/verify the Stripe account later from the Cloud dashboard.
-- Tax handling: option 3 (no tax automation) for now — simplest, since orders go through manual Discord fulfillment. Easy to upgrade later.
+Поставям на пауза работата по BCM's Shop (всичко е запазено и ще го продължим по всяко време). Преструктурирам проекта в нов сайт за **Спортен клуб по канадска борба „Берое"** — изцяло на български, с тъмно-зелена/черна тема, която съвпада с логото (лъв на щит), и с епичен фокус върху отбора, президента Георги Чолаков и постиженията.
 
-## Step 3 — Database schema
-One `orders` table (items stored inline as jsonb — products are static in `data/products.ts`, so no need for a separate join table yet).
+## Дизайн и тема
+
+- **Палитра** (от логото): дълбоко черно `#0A0F0A`, горско зелено `#0F3D2E`, акцент изумрудено `#1FAA59`, златно за медали/постижения `#E8B339`, червено-бяло-зелени български акценти за специални места.
+- **Шрифтове**: `Bebas Neue` / `Oswald` за заглавия (силни, спортни), `Inter` за основен текст. Кирилицата се поддържа от двата.
+- **Атмосфера**: тъмен, кинематографичен, с огнено-зелен мъгляв градиент като в логото, фини частици/glow ефекти, силна типография в главни букви и динамични hover анимации.
+- **Лого** (image 3) — във header-а, hero и footer.
+
+## Структура на сайта (single-page с навигация + отделни страници за дълбочина)
 
 ```text
-orders
-  id              uuid pk
-  order_code      text unique           -- "BCM-XXXXXX" shown to customer
-  stripe_session_id text unique
-  roblox_username text
-  email           text                  -- collected by Stripe Checkout
-  items           jsonb                 -- [{productId,tierId,name,qty,unitPrice}]
-  subtotal_cents  int
-  total_cents     int
-  currency        text  default 'usd'
-  status          text  default 'pending'  -- pending | paid | fulfilled | cancelled
-  created_at      timestamptz default now()
-  paid_at         timestamptz
+Header (sticky, тъмен glass, лого + меню + CTA „Тренирай с нас")
+ ├─ Начало (Hero)            — image 4 (отборна снимка) като фон с градиент,
+ │                              лого център, тагове „Стара Загора • Канадска борба",
+ │                              CTA „Присъедини се" / „Виж постиженията"
+ ├─ За клуба                 — мисия, история, локация, цифри (брой медали, шампиони, години)
+ ├─ Президент                — Георги Чолаков, image 2 като голям визуал,
+ │                              биография на база статията от nbp.bg, ключови постижения
+ ├─ Треньори                 — карти 2-3 (placeholder, лесно се редактират визуално)
+ ├─ Постижения (EPIC секция) — timeline + grid с медали:
+ │                              • 13 медала + 6 квоти за СП (2025)
+ │                              • злато от Девин (Христо Димов, 17 г.)
+ │                              • златни медали от Селановци
+ │                              • европейски и световни участия
+ │                              анимирана броеница (counters), златни glow карти
+ ├─ Галерия                  — masonry с image 2 и image 4 + плейсхолдъри
+ │                              (ще те питам за още снимки след одобрение)
+ ├─ Събития / Турнири        — предстоящи и минали (placeholder data, лесно се
+ │                              редактира; структурата е готова за бъдеща CMS)
+ ├─ Присъедини се            — защо да тренираш канадска борба, какво предлага клубът,
+ │                              разписание (placeholder), форма за контакт
+ ├─ Контакти + Социални      — адрес (Стара Загора), телефон, имейл, FB/IG/YouTube
+ └─ Footer                   — лого, навигация, права, връзки към социални мрежи
 ```
 
-RLS: public can `SELECT` a single row by `order_code` (used by the success page). Inserts/updates only via service-role inside edge functions. Admin policies will be added in the next round when we build the dashboard.
+## Съдържание (на български, готово за продукция)
 
-## Step 4 — Create Stripe products
-Use `batch_create_product` to mirror every tier from `src/data/products.ts` (Clan Rerolls, Aura/Cosmic Crates, Mythical/Secret Chests, 2x Drop / 2x Luck Gamepasses) using existing USD prices. Each Stripe price id gets stored back in a small lookup so checkout can reference them.
+- **Hero подзаглавие**: „Канадска борба • Стара Загора • От 1996 — Силата на лъва"
+- **Биография на Георги Чолаков** (от статията 2017 + контекст):
+  > „Президент на СК „Берое Канадска борба". Многократен медалист от международни и национални турнири — двукратен златен медалист от Международния турнир в Селановци, абсолютна купа за лява ръка от републиканското първенство за студенти, организатор на национални студентски състезания. Двигателят зад успехите на клуба."
+- **Постижения (примери от статиите)**:
+  - 2025 — 13 медала и 6 квоти за Световното първенство
+  - 2024 — Първо място за Христо Димов (17 г.), турнир в Девин
+  - 2017 — Две златни в Селановци (категории до 80 и 85 кг)
+  - Републикански шампиони, европейски и световни участия
 
-## Step 5 — Edge functions
+## Технически детайли
 
-**`create-checkout`** (public, no JWT)
-- Input: cart line items + roblox_username
-- Validates cart against server-side product list (never trust client prices)
-- Generates `order_code` `BCM-XXXXXX`
-- Inserts `orders` row with status `pending`
-- Creates Stripe Checkout Session (`mode: payment`, customer email collected by Stripe, `success_url=/order/{order_code}`, `cancel_url=/checkout`)
-- Stores `stripe_session_id` on the order
-- Returns the Stripe checkout URL
+- **Стек**: запазвам React + Vite + Tailwind + shadcn (както е). Премахвам shop-related страници от рутирането (`/products`, `/checkout`, `/cart`, `/bundles`, `/reviews`, `/blog`, `/status`) — файловете остават в repo за бъдещо връщане към BCM, но не се рутират.
+- **Нови страници**: `src/pages/Index.tsx` става главна с всички секции, плюс `Achievements.tsx`, `Trainers.tsx`, `Join.tsx` за разширени изгледи (по желание; основното е one-page).
+- **Нови компоненти** в `src/components/club/`:
+  `ClubHero`, `AboutClub`, `PresidentSection`, `TrainersGrid`, `AchievementsTimeline`, `StatsCounters`, `Gallery`, `EventsList`, `JoinCTA`, `ClubHeader`, `ClubFooter`, `ContactSection`.
+- **Тема**: пълно пренаписване на CSS променливите в `src/index.css` от лилаво-неоново към зелено-черна палитра; `tailwind.config.ts` остава, само токените се променят (всички съществуващи UI компоненти автоматично се пребоядисват).
+- **Активи**:
+  - `image-2.png` → `src/assets/president-cholakov.png`
+  - `image-3.png` → `src/assets/beroe-logo.png` (също в `public/` за favicon/OG)
+  - `image-4.png` → `src/assets/team-photo.jpg`
+- **SEO**: обновен `index.html` (title/description/OG на български), favicon = логото, OG = логото на градиент.
+- **i18n**: целият сайт е на български. Lang атрибут `<html lang="bg">`.
+- **Достъпност**: контраст AA на тъмната тема, alt текстове на български, focus states.
 
-**`stripe-webhook`** (public, no JWT, raw-body signature verified)
-- Handles `checkout.session.completed`
-- Flips order to `paid`, sets `paid_at`, stores `email` from the session
+## Какво ми трябва от теб (след одобрение на плана)
 
-**`get-order`** (public, no JWT)
-- Input: `order_code`
-- Returns minimal info (status, items, total, roblox_username) for the success page
+1. Допълнителни снимки за галерията (тренировки, турнири, медали) — drag-and-drop в чата.
+2. Имена и снимки на треньорите (ако искаш конкретни — иначе оставям placeholder).
+3. Адрес на залата, телефон и имейл за контакт.
+4. Линкове към Facebook / Instagram страниците на клуба, ако има.
 
-## Step 6 — Frontend changes
-- **`Checkout.tsx`**: replace simulated submit with a "Pay with Stripe" button that calls `create-checkout` and redirects to the returned Stripe URL. Roblox username field stays. Remove client-side `BCM-XXXXXX` generation.
-- **`OrderSuccess.tsx`** (new, route `/order/:code`): polls `get-order` until `status === 'paid'`, then shows the Discord claim flow (join → open ticket in `#claim-order` → paste order code + Roblox username + receipt screenshot). Until paid, shows a "Confirming payment…" state.
-- **`App.tsx`**: add the new route.
-- Cart is cleared only after Stripe redirects back with a paid order.
+Можеш да изпратиш всичко това по-късно — започвам с публично достъпните данни и плейсхолдъри, които лесно ще обновиш чрез Visual Edits.
 
-## Step 7 — Test
-Stripe test card `4242 4242 4242 4242`, any future expiry, any CVC. Verify:
-1. Checkout redirects to Stripe.
-2. After paying, `/order/BCM-XXXXXX` shows the Discord claim instructions.
-3. The `orders` row flips from `pending` → `paid` and the email is stored.
+## Какво НЕ правя
 
-## Out of scope (next round)
-- Admin login + role-based dashboard to view, search, and mark orders as `fulfilled`.
-- Email/Discord webhook notification when a new paid order arrives.
-- Going live on Stripe (claim/verify account when you're ready).
+- Не изтривам кода на BCM Shop — само го изключвам от рутирането, за да го върнем по всяко време.
+- Не добавям e-commerce, плащания, потребителски акаунти или база данни (не са необходими за този сайт). Ако по-късно поискаш форма за записване с база данни, ще използваме вече настроения Lovable Cloud.
