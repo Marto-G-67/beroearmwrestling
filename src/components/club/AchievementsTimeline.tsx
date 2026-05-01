@@ -28,6 +28,7 @@ import cholakovPodium2 from "@/assets/comp-2026-cholakov-podium-2.jpg";
 import cholakovMatch from "@/assets/comp-2026-cholakov-match.jpg";
 import worldsHero from "@/assets/comp-worlds-hero.jpg";
 import worldsTeam from "@/assets/comp-worlds-team.jpg";
+import shterioWorldsPodium from "@/assets/comp-worlds-shterio-podium.jpg";
 import shterioWorldsClip from "@/assets/comp-worlds-shterio-match.mp4";
 
 const competitions: Record<string, CompetitionData> = {
@@ -184,21 +185,21 @@ const competitorsWorlds: CompetitorData[] = [
     medals: [
       { hand: "победа", place: "Победа", color: "gold" },
     ],
-    cover: worldsTeam,
+    cover: shterioWorldsPodium,
     bio: [
       'Щерьо Щерев представи „Берое Армрестлинг" и България на Световното първенство по канадска борба — най-високата сцена в спорта. В категория 80 кг той се изправи срещу елитен международен съперник и излезе победител в драматичен мач, изпълнен с натиск, контрол и характер.',
       "Победата на световна сцена е резултат от години упорита работа в залата на клуба — силова подготовка, техника на куката, контрол на китката и психологическа устойчивост в най-важните моменти.",
       'Този успех поставя Щерьо сред имената, с които „Берое" вече се представя не само на национална, но и на световна сцена.',
     ],
     gallery: [
-      { src: worldsTeam, alt: "Националният отбор на България на Световното първенство по канадска борба — Албена" },
+      { src: shterioWorldsPodium, alt: "Щерьо Щерев на подиума — Световно първенство" },
     ],
     videos: [
       {
         type: "file",
         src: shterioWorldsClip,
         title: "Победният мач на Щерьо Щерев — Световно първенство",
-        poster: worldsTeam,
+        poster: shterioWorldsPodium,
       },
     ],
   },
