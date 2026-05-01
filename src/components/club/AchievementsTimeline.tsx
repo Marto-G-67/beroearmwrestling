@@ -121,7 +121,6 @@ const competitors2026: CompetitorData[] = [
     category: "90 кг",
     medals: [
       { hand: "лява ръка", place: "2 място", color: "silver" },
-      { hand: "дясна ръка", place: "5 място", color: "bronze" },
     ],
     cover: malamirPodium,
     bio: [
