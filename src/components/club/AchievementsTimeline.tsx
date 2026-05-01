@@ -46,6 +46,7 @@ const achievements = [
     text: 'Пореден исторически успех за Beroe Armwrestling — 13 медала от национално състезание и 6 извоювани квоти за Световното първенство по канадска борба.',
     highlight: true,
     competitionId: "2025-worlds-quotas",
+    image: comp2025,
   },
   {
     year: "2024",
