@@ -8,7 +8,7 @@ const options: ISourceOptions = {
   background: { color: { value: "transparent" } },
   fpsLimit: 60,
   particles: {
-    number: { value: 70, density: { enable: true, area: 900 } },
+    number: { value: 70, density: { enable: true } },
     color: { value: ["#a78bfa", "#60a5fa", "#c084fc", "#7dd3fc"] },
     shape: { type: "circle" },
     opacity: {
