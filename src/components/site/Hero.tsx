@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Rocket, Shield, Gamepad2, Zap, ArrowRight, Star } from "lucide-react";
+import ParticleField from "./ParticleField";
 
 const badges = [
   { icon: Rocket, label: "Instant delivery" },
@@ -12,6 +13,7 @@ const badges = [
 const Hero = () => (
   <section className="relative overflow-hidden">
     <div className="absolute inset-0 grid-bg opacity-60" />
+    <ParticleField />
     <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-96 w-[120%] bg-primary/20 blur-[120px] rounded-full" />
     <div className="absolute top-40 -right-20 h-72 w-72 bg-secondary/30 blur-[100px] rounded-full animate-pulse-glow" />
     <div className="absolute top-60 -left-20 h-72 w-72 bg-accent/20 blur-[100px] rounded-full" />

@@ -1,19 +1,45 @@
 import Hero from "@/components/site/Hero";
 import ProductCard from "@/components/site/ProductCard";
+import BundleCard from "@/components/site/BundleCard";
+import ActivityTicker from "@/components/site/ActivityTicker";
+import ReviewsHighlight from "@/components/site/ReviewsHighlight";
+import RecentlyViewed from "@/components/site/RecentlyViewed";
 import { CATEGORIES, PRODUCTS } from "@/data/products";
+import { BUNDLES } from "@/data/bundles";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Clock, Users, ShieldCheck, MessagesSquare } from "lucide-react";
+import { ArrowRight, Sparkles, Clock, Users, ShieldCheck, MessagesSquare, Package } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const Index = () => {
   const featured = PRODUCTS.filter((p) => p.popular);
+  const featuredBundles = BUNDLES.slice(0, 2);
 
   return (
     <>
       <Hero />
+      <ActivityTicker />
+
+      {/* Bundles teaser */}
+      <section className="container py-16">
+        <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
+          <div>
+            <div className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-muted-foreground">
+              <Package className="h-3.5 w-3.5 text-primary" /> Limited bundles
+            </div>
+            <h2 className="font-display text-3xl md:text-5xl font-bold gradient-text mt-1">Bundle deals</h2>
+            <p className="text-sm text-muted-foreground mt-1">Save up to 25% with pre-built combos.</p>
+          </div>
+          <Link to="/bundles" className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1">
+            View all bundles <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2">
+          {featuredBundles.map((b) => <BundleCard key={b.id} bundle={b} />)}
+        </div>
+      </section>
 
       {/* Shop by category */}
-      <section className="container py-16">
+      <section className="container py-12">
         <div className="flex items-end justify-between mb-8">
           <div>
             <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Shop</div>
@@ -49,7 +75,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured */}
+      {/* Featured products */}
       <section className="container py-12">
         <div className="flex items-end justify-between mb-8">
           <div>
@@ -63,6 +89,10 @@ const Index = () => {
           {featured.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       </section>
+
+      <ReviewsHighlight />
+
+      <RecentlyViewed />
 
       {/* Stats */}
       <section className="container py-16">
