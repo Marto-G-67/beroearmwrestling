@@ -6,12 +6,16 @@ import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
 import ProductCard from "@/components/site/ProductCard";
+import RecentlyViewed from "@/components/site/RecentlyViewed";
+import StickyAddToCart from "@/components/site/StickyAddToCart";
+import { useTrackView } from "@/lib/recentlyViewed";
 
 const ProductDetail = () => {
   const { slug } = useParams();
   const product = slug ? findProduct(slug) : undefined;
   const { add } = useCart();
   const [tierId, setTierId] = useState(product?.tiers[0].id ?? "");
+  useTrackView(product?.id);
 
   if (!product) {
     return (
@@ -31,7 +35,7 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="container py-10">
+    <div className="container py-10 pb-24 lg:pb-10">
       <Link to="/products" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1 mb-6">
         <ArrowLeft className="h-4 w-4" /> Back to products
       </Link>
@@ -124,6 +128,10 @@ const ProductDetail = () => {
           {related.map((p) => <ProductCard key={p.id} product={p} />)}
         </div>
       </section>
+
+      <RecentlyViewed excludeId={product.id} />
+
+      <StickyAddToCart tier={tier} productName={product.name} onAdd={handleAdd} />
     </div>
   );
 };
