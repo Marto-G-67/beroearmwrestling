@@ -2,6 +2,10 @@ import { useState } from "react";
 import { Trophy, Medal, Star, Flag, BookOpen } from "lucide-react";
 import CompetitionModal, { CompetitionData } from "./CompetitionModal";
 import comp2025 from "@/assets/comp-2025-team.jpg";
+import comp2025_1 from "@/assets/comp-2025-1.jpg";
+import comp2025_2 from "@/assets/comp-2025-2.jpg";
+import comp2025_3 from "@/assets/comp-2025-3.jpg";
+import comp2025_4 from "@/assets/comp-2025-4.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -26,6 +30,10 @@ const competitions: Record<string, CompetitionData> = {
     ],
     gallery: [
       { src: comp2025, alt: 'Отборът на „Берое" след държавното първенство 2025' },
+      { src: comp2025_4, alt: 'Подиум на държавното първенство — шампион от „Берое"' },
+      { src: comp2025_1, alt: 'Битка на масата — състезател на „Берое" в действие' },
+      { src: comp2025_2, alt: 'Концентрация преди старта — мач от държавното първенство' },
+      { src: comp2025_3, alt: 'Тежка категория — мощна схватка под рефера' },
     ],
   },
 };
@@ -38,6 +46,7 @@ const achievements = [
     text: 'Пореден исторически успех за Beroe Armwrestling — 13 медала от национално състезание и 6 извоювани квоти за Световното първенство по канадска борба.',
     highlight: true,
     competitionId: "2025-worlds-quotas",
+    image: comp2025,
   },
   {
     year: "2024",
@@ -159,7 +168,33 @@ const AchievementsTimeline = () => {
                     />
                   </div>
 
-                  <div className="hidden md:block" />
+                  {a.image ? (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        a.competitionId && setOpenId(a.competitionId)
+                      }
+                      aria-label={`Виж пълната статия: ${a.title}`}
+                      className="group relative block w-full overflow-hidden rounded-2xl border border-border/60 glass shadow-elevated focus:outline-none focus:ring-2 focus:ring-warning"
+                    >
+                      <img
+                        src={a.image}
+                        alt={a.title}
+                        loading="lazy"
+                        className="w-full h-56 md:h-72 object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs uppercase tracking-[0.3em] text-warning">
+                        <span className="inline-flex items-center gap-2">
+                          <BookOpen className="h-4 w-4" />
+                          Отвори статията
+                        </span>
+                        <span className="text-foreground/80">{a.year}</span>
+                      </div>
+                    </button>
+                  ) : (
+                    <div className="hidden md:block" />
+                  )}
                 </li>
               );
             })}
