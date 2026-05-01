@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-import { X, Medal, Weight, Expand } from "lucide-react";
+import { X, Medal, Weight, Expand, Play } from "lucide-react";
 import Lightbox from "./Lightbox";
+
+export interface CompetitorVideo {
+  type: "youtube" | "vimeo" | "file";
+  src: string;
+  title?: string;
+  poster?: string;
+}
 
 export interface CompetitorData {
   name: string;
@@ -9,7 +16,24 @@ export interface CompetitorData {
   cover: string;
   bio: string[];
   gallery: { src: string; alt: string }[];
+  videos?: CompetitorVideo[];
 }
+
+const toEmbedUrl = (v: CompetitorVideo): string => {
+  if (v.type === "youtube") {
+    // Accept full URLs or bare IDs
+    const idMatch =
+      v.src.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+    const id = idMatch ? idMatch[1] : v.src;
+    return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
+  }
+  if (v.type === "vimeo") {
+    const idMatch = v.src.match(/vimeo\.com\/(\d+)/);
+    const id = idMatch ? idMatch[1] : v.src;
+    return `https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0`;
+  }
+  return v.src;
+};
 
 interface Props {
   data: CompetitorData;
