@@ -17,6 +17,9 @@ import shterioMatch from "@/assets/comp-2026-shterio-match.jpg";
 import davidPodium from "@/assets/comp-2026-david-podium.jpg";
 import davidMatch1 from "@/assets/comp-2026-david-match-1.jpg";
 import davidMatch2 from "@/assets/comp-2026-david-match-2.jpg";
+import malamirPodium from "@/assets/comp-2026-malamir-podium.jpg";
+import malamirMatch1 from "@/assets/comp-2026-malamir-match-1.jpg";
+import malamirMatch2 from "@/assets/comp-2026-malamir-match-2.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -105,6 +108,25 @@ const competitors2026: CompetitorData[] = [
       { src: davidPodium, alt: "Давид Каневски на подиума — Републиканско първенство 2026" },
       { src: davidMatch1, alt: "Давид Каневски в схватка на масата — Републиканско първенство 2026" },
       { src: davidMatch2, alt: "Давид Каневски срещу съперник — Републиканско първенство 2026" },
+    ],
+  },
+  {
+    name: "Маламир Михалев",
+    category: "90 кг",
+    medals: [
+      { hand: "лява ръка", place: "2 място", color: "silver" },
+      { hand: "дясна ръка", place: "5 място", color: "bronze" },
+    ],
+    cover: malamirPodium,
+    bio: [
+      'Маламир Михалев е един от младите състезатели на „Берое Армрестлинг", който продължава да трупа опит и медали на националната сцена. На Републиканското първенство по канадска борба 2026 г. в категория 90 кг той извоюва сребърен медал на лява ръка и завърши на пето място на дясна.',
+      "Маламир тренира целогодишно в залата на клуба, като съчетава силова подготовка с техническа работа на масата. Стилът му се отличава с упорство, добра база на лява ръка и желание за развитие във всеки един аспект на спорта.",
+      'Среброто на лява ръка е важна стъпка в кариерата му и потвърждение, че следващото поколение на „Берое" има характера да се бори за върха.',
+    ],
+    gallery: [
+      { src: malamirPodium, alt: "Маламир Михалев на подиума — Републиканско първенство 2026" },
+      { src: malamirMatch1, alt: "Маламир Михалев в схватка на масата — Републиканско първенство 2026" },
+      { src: malamirMatch2, alt: "Маламир Михалев срещу съперник — Републиканско първенство 2026" },
     ],
   },
 ];
