@@ -5,7 +5,7 @@ import RecentlyViewed from "@/components/site/RecentlyViewed";
 import { CATEGORIES, PRODUCTS } from "@/data/products";
 import { BUNDLES } from "@/data/bundles";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Clock, Users, ShieldCheck, MessagesSquare, Package } from "lucide-react";
+import { ArrowRight, Sparkles, Clock, ShieldCheck, MessagesSquare, Package } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const Index = () => {
@@ -91,12 +91,11 @@ const Index = () => {
 
       {/* Stats */}
       <section className="container py-16">
-        <div className="grid md:grid-cols-4 gap-4">
+        <div className="grid md:grid-cols-3 gap-4">
           {[
-            { icon: Users, v: "10,000+", l: "Happy customers" },
             { icon: Clock, v: "<5 min", l: "Avg delivery time" },
             { icon: ShieldCheck, v: "100%", l: "Safe & undetected" },
-            { icon: MessagesSquare, v: "24/7", l: "Support" },
+            { icon: MessagesSquare, v: "24/7", l: "Discord support" },
           ].map((s) => (
             <div key={s.l} className="glass rounded-2xl p-6 text-center card-hover">
               <s.icon className="h-7 w-7 mx-auto text-primary" />
