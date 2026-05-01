@@ -14,6 +14,9 @@ import antonMatch from "@/assets/comp-2026-anton-match.jpg";
 import antonPodium2 from "@/assets/comp-2026-anton-podium-2.jpg";
 import shterioPodium from "@/assets/comp-2026-shterio-podium.jpg";
 import shterioMatch from "@/assets/comp-2026-shterio-match.jpg";
+import davidPodium from "@/assets/comp-2026-david-podium.jpg";
+import davidMatch1 from "@/assets/comp-2026-david-match-1.jpg";
+import davidMatch2 from "@/assets/comp-2026-david-match-2.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
