@@ -121,7 +121,6 @@ const competitors2026: CompetitorData[] = [
     category: "90 кг",
     medals: [
       { hand: "лява ръка", place: "2 място", color: "silver" },
-      { hand: "дясна ръка", place: "5 място", color: "bronze" },
     ],
     cover: malamirPodium,
     bio: [
@@ -176,15 +175,6 @@ const competitors2026: CompetitorData[] = [
 
 const achievements = [
   {
-    year: "2025",
-    icon: Trophy,
-    title: "13 медала и 6 квоти за Световното първенство",
-    text: 'Пореден исторически успех за Beroe Armwrestling — 13 медала от национално състезание и 6 извоювани квоти за Световното първенство по канадска борба.',
-    highlight: true,
-    competitionId: "2025-worlds-quotas",
-    image: comp2025,
-  },
-  {
     year: "2026",
     icon: Medal,
     title: "Републиканско първенство по канадска борба 2026г.",
@@ -192,6 +182,15 @@ const achievements = [
     highlight: true,
     competitorsId: "2026-republic",
     image: antonPodium,
+  },
+  {
+    year: "2025",
+    icon: Trophy,
+    title: "13 медала и 6 квоти за Световното първенство",
+    text: 'Пореден исторически успех за Beroe Armwrestling — 13 медала от национално състезание и 6 извоювани квоти за Световното първенство по канадска борба.',
+    highlight: true,
+    competitionId: "2025-worlds-quotas",
+    image: comp2025,
   },
 ];
 
