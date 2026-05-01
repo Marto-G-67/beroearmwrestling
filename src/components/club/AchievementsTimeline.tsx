@@ -20,6 +20,9 @@ import davidMatch2 from "@/assets/comp-2026-david-match-2.jpg";
 import malamirPodium from "@/assets/comp-2026-malamir-podium.jpg";
 import malamirMatch1 from "@/assets/comp-2026-malamir-match-1.jpg";
 import malamirMatch2 from "@/assets/comp-2026-malamir-match-2.jpg";
+import milkyPodium from "@/assets/comp-2026-milky-podium.jpg";
+import milkyMatch1 from "@/assets/comp-2026-milky-match-1.jpg";
+import milkyMatch2 from "@/assets/comp-2026-milky-match-2.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -127,6 +130,25 @@ const competitors2026: CompetitorData[] = [
       { src: malamirPodium, alt: "Маламир Михалев на подиума — Републиканско първенство 2026" },
       { src: malamirMatch1, alt: "Маламир Михалев в схватка на масата — Републиканско първенство 2026" },
       { src: malamirMatch2, alt: "Маламир Михалев срещу съперник — Републиканско първенство 2026" },
+    ],
+  },
+  {
+    name: "Милкияс (Milky)",
+    category: "65+ кг",
+    medals: [
+      { hand: "лява ръка", place: "1 място", color: "gold" },
+      { hand: "дясна ръка", place: "1 място", color: "gold" },
+    ],
+    cover: milkyPodium,
+    bio: [
+      'Милкияс, познат на всички в залата като Milky, е един от най-ярките млади таланти на „Берое Армрестлинг". На Републиканското първенство по канадска борба 2026 г. в Панагюрище той се качи на най-високото стъпало на подиума и с двете ръце — два златни медала в категория 65+ кг.',
+      "Milky съчетава експлозивна сила, отлична техника и хладнокръвие на масата. Тренира упорито целогодишно в залата на клуба, работейки както върху силовата база, така и върху специфичните елементи на спорта — натиск, кука и контрол в крайната фаза на мача.",
+      'Двойната титла на Републиканското първенство го утвърждава като един от лидерите на новото поколение на „Берое" и категоричен фаворит за бъдещите международни старти.',
+    ],
+    gallery: [
+      { src: milkyPodium, alt: "Милкияс на първото стъпало на подиума — Републиканско първенство 2026" },
+      { src: milkyMatch1, alt: "Милкияс в схватка на масата — Републиканско първенство 2026" },
+      { src: milkyMatch2, alt: "Милкияс срещу съперник — Републиканско първенство 2026" },
     ],
   },
 ];
