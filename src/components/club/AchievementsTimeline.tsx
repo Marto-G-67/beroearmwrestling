@@ -2,6 +2,10 @@ import { useState } from "react";
 import { Trophy, Medal, Star, Flag, BookOpen } from "lucide-react";
 import CompetitionModal, { CompetitionData } from "./CompetitionModal";
 import comp2025 from "@/assets/comp-2025-team.jpg";
+import comp2025_1 from "@/assets/comp-2025-1.jpg";
+import comp2025_2 from "@/assets/comp-2025-2.jpg";
+import comp2025_3 from "@/assets/comp-2025-3.jpg";
+import comp2025_4 from "@/assets/comp-2025-4.jpg";
 
 const competitions: Record<string, CompetitionData> = {
   "2025-worlds-quotas": {
@@ -26,6 +30,10 @@ const competitions: Record<string, CompetitionData> = {
     ],
     gallery: [
       { src: comp2025, alt: 'Отборът на „Берое" след държавното първенство 2025' },
+      { src: comp2025_4, alt: "Подиум на държавното първенство — шампион от „Берое"" },
+      { src: comp2025_1, alt: "Битка на масата — състезател на „Берое" в действие" },
+      { src: comp2025_2, alt: "Концентрация преди старта — мач от държавното първенство" },
+      { src: comp2025_3, alt: "Тежка категория — мощна схватка под рефера" },
     ],
   },
 };
