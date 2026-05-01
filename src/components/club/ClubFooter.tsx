@@ -25,8 +25,8 @@ const ClubFooter = () => (
           {[
             ["#about", "За клуба"],
             ["#president", "Президент"],
-            ["#trainers", "Треньори"],
             ["#achievements", "Постижения"],
+            ["#gallery", "Галерия"],
             ["#join", "Тренирай с нас"],
             ["#contact", "Контакти"],
           ].map(([href, label]) => (
